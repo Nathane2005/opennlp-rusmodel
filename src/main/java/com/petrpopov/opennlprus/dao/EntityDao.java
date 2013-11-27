@@ -36,6 +36,12 @@ public class EntityDao<T> {
         return get;
     }
 
+    public T save(T obj) {
+        this.currentSession().saveOrUpdate(obj);
+        return obj;
+    }
+
+
     private Session currentSession()
     {
         Session sess = sessionFactory.getCurrentSession();

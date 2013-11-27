@@ -4,7 +4,12 @@ import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -56,6 +61,34 @@ public class SimpleCrawler extends WebCrawler {
             System.out.println("Text length: " + text.length());
             System.out.println("Html length: " + html.length());
             System.out.println("Number of outgoing links: " + links.size());
+
+            WebMessage message = getMessage(url, htmlParseData);
+            sendMessage(message);
         }
     }
+
+    public void sendMessage(final WebMessage message) {
+        JmsTemplate template = getJmsTemplate();
+        template.send(new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                return session.createObjectMessage(message);
+            }
+        });
+    }
+
+    private JmsTemplate getJmsTemplate() {
+        JmsTemplate jmsTemplate = SpringContext.getApplicationContext().getBean(JmsTemplate.class);
+        return jmsTemplate;
+    }
+
+    private WebMessage getMessage(String url, HtmlParseData page) {
+        String text = page.getText();
+
+        WebMessage mes = new WebMessage(url, text);
+        return mes;
+    }
 }
+
+
+

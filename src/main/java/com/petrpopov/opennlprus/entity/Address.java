@@ -17,7 +17,7 @@ public class Address {
 
     @Id
     @Column(name = "aoid", columnDefinition = "char", length = 36)
-    private String aoid;
+    private String id;
 
     @Column(name = "formalname", length = 120)
     private String formalname;
@@ -25,12 +25,12 @@ public class Address {
     @Column(name = "aolevel")
     private Integer aolevel;
 
-    public String getAoid() {
-        return aoid;
+    public String getId() {
+        return id;
     }
 
-    public void setAoid(String aoid) {
-        this.aoid = aoid;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getFormalname() {
@@ -61,13 +61,13 @@ public class Address {
 
         Address address = (Address) o;
 
-        if (aoid != null ? !aoid.equals(address.aoid) : address.aoid != null) return false;
+        if (id != null ? !id.equals(address.id) : address.id != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return aoid != null ? aoid.hashCode() : 0;
+        return id != null ? id.hashCode() : 0;
     }
 }
