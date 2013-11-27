@@ -1,4 +1,4 @@
-package com.petrpopov.opennlprus;
+package com.petrpopov.opennlprus.main;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
