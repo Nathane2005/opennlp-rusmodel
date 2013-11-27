@@ -22,7 +22,7 @@ public class App {
 
         System.out.println(address);
 
-        //CrawlerManager manager = new CrawlerManager();
-        //manager.start("http://www.rbc.ru/");
+        CrawlerManager manager = context.getBean(CrawlerManager.class);
+        manager.start("http://www.rbc.ru/");
     }
 }

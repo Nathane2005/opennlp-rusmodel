@@ -15,16 +15,30 @@ import java.util.regex.Pattern;
  */
 public class SimpleCrawler extends WebCrawler {
 
+    private String url;
+
     private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g"
             + "|png|tiff?|mid|mp2|mp3|mp4"
             + "|wav|avi|mov|mpeg|ram|m4v|pdf"
             + "|rm|smil|wmv|swf|wma|zip|rar|gz))$");
 
+    public SimpleCrawler() {
+        //stupid fucking macaroni code
+        //because of stupid fuckin hardcode newInstance in fucking crawler4j
+        CrawlerManager manager = SpringContext.getApplicationContext().getBean(CrawlerManager.class);
+        if( manager == null )
+            throw new RuntimeException("No fucking SpringContext initialized !");
+
+        this.url = manager.getUrl();
+        if( this.url == null )
+            throw new RuntimeException("No url in CrawlerManager !");
+    }
 
     @Override
     public boolean shouldVisit(WebURL url) {
+
         String href = url.getURL().toLowerCase();
-        boolean res = !FILTERS.matcher(href).matches() && href.startsWith("http://www.rbc.ru/");
+        boolean res = !FILTERS.matcher(href).matches() && href.startsWith(this.url);
         return res;
     }
 

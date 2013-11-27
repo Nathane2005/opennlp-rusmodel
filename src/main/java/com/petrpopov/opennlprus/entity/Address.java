@@ -53,4 +53,21 @@ public class Address {
     public String toString() {
         return "Address: " + formalname + " type: " + aolevel;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Address address = (Address) o;
+
+        if (aoid != null ? !aoid.equals(address.aoid) : address.aoid != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return aoid != null ? aoid.hashCode() : 0;
+    }
 }
