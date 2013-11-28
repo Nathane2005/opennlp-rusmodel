@@ -1,5 +1,6 @@
 package com.petrpopov.opennlprus.dao;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
@@ -7,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * User: petrpopov
@@ -30,6 +32,22 @@ public class EntityDao<T> {
         this.domainClass = domainClass;
     }
 
+    public List<T> findAll()
+    {
+        return findAllObjects(domainClass);
+    }
+
+    protected List<T> findAllObjects(Class clazz)
+    {
+        Session sess = this.currentSession();
+
+        Query namedQuery = sess.createQuery("select p from " + clazz.getName() + " p");
+        namedQuery.setCacheable(true);
+        List<T> list = namedQuery.list();
+
+        return list;
+    }
+
     public T find(Serializable id) {
         Session sess = this.currentSession();
         T get = (T) sess.get(domainClass, id);
@@ -39,6 +57,26 @@ public class EntityDao<T> {
     public T save(T obj) {
         this.currentSession().saveOrUpdate(obj);
         return obj;
+    }
+
+    public List<T> findByQuery(String querySource, String name, Object param)
+    {
+        Query query = createQuery(querySource);
+
+        query.setParameter(name, param);
+
+        List<T> list = query.list();
+        return list;
+    }
+
+    private Query createQuery(String querySource)
+    {
+        Session sess = this.currentSession();
+
+        Query query = sess.createQuery(querySource);
+        query.setCacheable(true);
+
+        return query;
     }
 
 

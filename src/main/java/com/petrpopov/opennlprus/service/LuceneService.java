@@ -91,7 +91,7 @@ public class LuceneService {
             Document doc = is.doc(scoreDoc.doc);
             System.out.println("Found document: " + doc.get("text"));
 
-            res.add(doc.get(field));
+            res.add(doc.get("url"));
         }
 
         return res;

@@ -29,21 +29,17 @@ public class MessageReciever implements SessionAwareMessageListener {
     @Override
     public void onMessage(Message message, Session session) throws JMSException {
 
-        logger.info("Message recieved.");
-
         if( !(message instanceof ObjectMessage) )
             return;
 
         ObjectMessage mes = (ObjectMessage) message;
 
         Serializable object = mes.getObject();
-        if( object == null )
-            return;
-
         if( !(object instanceof WebMessage) )
             return;
 
         WebMessage webMessage = (WebMessage) object;
+        logger.info("Message recieved: " + webMessage.getUrl());
 
         try {
             boolean contains = luceneService.contains(webMessage);
@@ -60,10 +56,5 @@ public class MessageReciever implements SessionAwareMessageListener {
         } catch (Exception e) {
 
         }
-
-        String url = message.getStringProperty("url");
-        String text = message.getStringProperty("text");
-
-        System.out.println("Message recieved: " + url);
     }
 }
