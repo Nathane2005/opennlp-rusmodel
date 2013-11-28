@@ -1,5 +1,7 @@
-package com.petrpopov.opennlprus.main;
+package com.petrpopov.opennlprus.service;
 
+import com.petrpopov.opennlprus.other.SpringContext;
+import com.petrpopov.opennlprus.other.WebMessage;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
@@ -29,7 +31,7 @@ public class SimpleCrawler extends WebCrawler {
 
     public SimpleCrawler() {
         //stupid fucking macaroni code
-        //because of stupid fuckin hardcode newInstance in fucking crawler4j
+        //because of stupid fucking hardcode newInstance in fucking crawler4j
         CrawlerManager manager = SpringContext.getApplicationContext().getBean(CrawlerManager.class);
         if( manager == null )
             throw new RuntimeException("No fucking SpringContext initialized !");

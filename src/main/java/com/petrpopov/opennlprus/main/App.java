@@ -1,7 +1,8 @@
 package com.petrpopov.opennlprus.main;
 
-import com.petrpopov.opennlprus.dao.AddressDao;
-import com.petrpopov.opennlprus.entity.Address;
+import com.petrpopov.opennlprus.other.WebMessage;
+import com.petrpopov.opennlprus.service.CrawlerManager;
+import com.petrpopov.opennlprus.service.LuceneService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -14,13 +15,16 @@ public class App {
     public static void main(String[] args) throws Exception {
 
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
-                new String[] { "spring.xml" }, true);
+                new String[] {"spring/spring.xml"}, true);
 
 
-        AddressDao addressDao = context.getBean(AddressDao.class);
-        Address address = addressDao.find("00000e97-4287-4b0e-ac97-346ca29e5f39");
+        LuceneService bean = context.getBean(LuceneService.class);
+        bean.addDocument(new WebMessage("http://ya.ru", "Hello, world, I am the CEO, bitch!"));
 
-        System.out.println(address);
+        // AddressDao addressDao = context.getBean(AddressDao.class);
+       // Address address = addressDao.find("00000e97-4287-4b0e-ac97-346ca29e5f39");
+
+       // System.out.println(address);
 
         CrawlerManager manager = context.getBean(CrawlerManager.class);
         manager.start("http://www.rbc.ru/");

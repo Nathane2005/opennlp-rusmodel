@@ -1,4 +1,4 @@
-package com.petrpopov.opennlprus.main;
+package com.petrpopov.opennlprus.other;
 
 import java.io.Serializable;
 
@@ -8,6 +8,7 @@ import java.io.Serializable;
  * Time: 1:28
  */
 public class WebMessage implements Serializable {
+
     private String url;
     private String text;
 
@@ -19,19 +20,20 @@ public class WebMessage implements Serializable {
         this.text = text;
     }
 
-    private String getUrl() {
+
+    public String getUrl() {
         return url;
     }
 
-    private void setUrl(String url) {
+    public void setUrl(String url) {
         this.url = url;
     }
 
-    private String getText() {
+    public String getText() {
         return text;
     }
 
-    private void setText(String text) {
+    public void setText(String text) {
         this.text = text;
     }
 }

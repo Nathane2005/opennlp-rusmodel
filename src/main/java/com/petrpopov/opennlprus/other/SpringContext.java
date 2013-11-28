@@ -1,4 +1,4 @@
-package com.petrpopov.opennlprus.main;
+package com.petrpopov.opennlprus.other;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

@@ -1,4 +1,4 @@
-package com.petrpopov.opennlprus.main;
+package com.petrpopov.opennlprus.service;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;

@@ -11,6 +11,8 @@
     <properties>
         <spring.version>3.2.4.RELEASE</spring.version>
         <hibernate.version>4.1.6.Final</hibernate.version>
+        <activemq.version>5.8.0</activemq.version>
+        <lucene.version>4.6.0</lucene.version>
     </properties>
 
     <build>
@@ -115,26 +117,53 @@
         <!-- end of hibernate -->
 
 
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-all</artifactId>
-            <version>5.8.0</version>
-        </dependency>
+        <!-- activemq -->
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-client</artifactId>
-            <version>5.8.0</version>
+            <version>${activemq.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-broker</artifactId>
-            <version>5.8.0</version>
+            <version>${activemq.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-spring</artifactId>
-            <version>5.8.0</version>
+            <version>${activemq.version}</version>
         </dependency>
+        <!-- end of activemq -->
+
+        <!-- lucene -->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-common</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queryparser</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <!-- end of lucene -->
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.5</version>
+        </dependency>
+
 
 
         <dependency>
@@ -143,6 +172,7 @@
             <version>4.9</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
 </project>
