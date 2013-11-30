@@ -15,6 +15,14 @@
         <lucene.version>4.6.0</lucene.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>russian-morphology.lucene.apache.org</id>
+            <name>Lucene Russian Morphology Repository for Maven</name>
+            <url>http://russianmorphology.googlecode.com/svn/repo/releases/</url>
+        </repository>
+    </repositories>
+
     <build>
         <resources>
             <resource>
@@ -151,6 +159,11 @@
             <artifactId>lucene-queryparser</artifactId>
             <version>${lucene.version}</version>
         </dependency>
+        <!--dependency>
+            <groupId>org.apache.lucene.morphology</groupId>
+            <artifactId>russian</artifactId>
+            <version>1.0</version>
+        </dependency-->
         <!-- end of lucene -->
 
         <dependency>

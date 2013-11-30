@@ -1,13 +1,7 @@
 package com.petrpopov.opennlprus.service;
 
-import com.petrpopov.opennlprus.entity.Address;
-import com.petrpopov.opennlprus.other.WebMessage;
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * User: petrpopov
@@ -18,16 +12,18 @@ import java.util.List;
 @Component
 public class GeoSearcher {
 
-    @Autowired
-    private LuceneService luceneService;
 
     @Autowired
     private AddressService addressService;
-
+    /*
     public boolean containsGeoName(WebMessage message) throws IOException, ParseException {
 
-        for (Address address : addressService.getAddresses()) {
+       for (Address address : addressService.getAddresses()) {
 
+            if( address.getId().equals("5c8b06f1-518e-496e-b683-7bf917e0d70b"))
+                System.out.println("moscow");
+
+            /*
             List<String> list = luceneService.search(address.getFormalname(), "text");
             if( list.isEmpty() )
                 return false;
@@ -40,9 +36,9 @@ public class GeoSearcher {
                 }
             }
 
-            return ok;
-        }
+            return ok;*/
 
+  /*
         return false;
-    }
+    }*/
 }

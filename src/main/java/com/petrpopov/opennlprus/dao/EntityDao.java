@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: petrpopov
@@ -64,6 +65,18 @@ public class EntityDao<T> {
         Query query = createQuery(querySource);
 
         query.setParameter(name, param);
+
+        List<T> list = query.list();
+        return list;
+    }
+
+    public List<T> findByQuery(String querySource, Map<String, Object> params)
+    {
+        Query query = createQuery(querySource);
+
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            query.setParameter(entry.getKey(), entry.getValue());
+        }
 
         List<T> list = query.list();
         return list;

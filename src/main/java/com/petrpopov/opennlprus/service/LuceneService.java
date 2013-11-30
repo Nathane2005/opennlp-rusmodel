@@ -2,10 +2,9 @@ package com.petrpopov.opennlprus.service;
 
 import com.petrpopov.opennlprus.other.WebMessage;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.ru.RussianAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
@@ -37,14 +36,16 @@ public class LuceneService {
 
     private volatile Directory dirIndex;
     private volatile IndexWriterConfig config;
+    private volatile Analyzer analyzer;
 
     @PostConstruct
-    public void init() {
+    public void init() throws IOException {
 
         dirIndex = new RAMDirectory();
 
-        Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_46);
+        analyzer = new RussianAnalyzer(Version.LUCENE_46);
         config = new IndexWriterConfig(Version.LUCENE_46, analyzer);
+        config.setOpenMode(IndexWriterConfig.OpenMode.CREATE); // Rewrite old index
     }
 
     public synchronized void addDocument(WebMessage message) throws IOException {
@@ -55,15 +56,18 @@ public class LuceneService {
     public synchronized void addDocument(String url, String text) throws IOException {
 
         Document doc = new Document();
-        doc.add(new TextField("url", url, Field.Store.YES));
-        doc.add(new TextField("text", text, Field.Store.YES));
+
+        doc.add(new Field("url", url, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+        doc.add(new Field("text", text, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+        //doc.add(new TextField("url", url, Field.Store.YES));
+        //doc.add(new TextField("text", text, Field.Store.YES));
 
         IndexWriter writer = getIndexWriter();
         writer.addDocument(doc);
         writer.close();
     }
 
-    public boolean contains(WebMessage message) throws IOException, ParseException {
+    public boolean containsUrl(WebMessage message) throws IOException, ParseException {
 
         List<String> res = search(message.getUrl(), "url");
 
@@ -82,7 +86,12 @@ public class LuceneService {
         IndexReader reader = DirectoryReader.open(getDirIndex());
         IndexSearcher is = new IndexSearcher(reader);
 
-        Query query = new QueryParser(Version.LUCENE_46, field, new StandardAnalyzer(Version.LUCENE_46)).parse(q);
+
+        QueryParser parser = new QueryParser(Version.LUCENE_46, field, getAnalyzer());
+        parser.setDefaultOperator(QueryParser.Operator.AND);
+
+        Query query = parser.parse(q);
+
         TopDocs docs = is.search(query, 10);
 
         List<String> res = new ArrayList<String>();
@@ -108,5 +117,9 @@ public class LuceneService {
 
     private Directory getDirIndex() {
         return dirIndex;
+    }
+
+    public Analyzer getAnalyzer() {
+        return analyzer;
     }
 }

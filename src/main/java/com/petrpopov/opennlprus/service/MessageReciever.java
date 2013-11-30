@@ -2,7 +2,6 @@ package com.petrpopov.opennlprus.service;
 
 import com.petrpopov.opennlprus.other.WebMessage;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.listener.SessionAwareMessageListener;
 import org.springframework.stereotype.Component;
 
@@ -21,8 +20,8 @@ import java.io.Serializable;
 @Component
 public class MessageReciever implements SessionAwareMessageListener {
 
-    @Autowired
-    private LuceneService luceneService;
+  //  @Autowired
+//    private LuceneService luceneService;
 
     private Logger logger = Logger.getLogger(MessageReciever.class);
 
@@ -40,7 +39,7 @@ public class MessageReciever implements SessionAwareMessageListener {
 
         WebMessage webMessage = (WebMessage) object;
         logger.info("Message recieved: " + webMessage.getUrl());
-
+       /*
         try {
             boolean contains = luceneService.contains(webMessage);
 
@@ -55,6 +54,6 @@ public class MessageReciever implements SessionAwareMessageListener {
             }
         } catch (Exception e) {
 
-        }
+        } */
     }
 }
