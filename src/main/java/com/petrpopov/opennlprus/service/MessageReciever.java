@@ -2,6 +2,7 @@ package com.petrpopov.opennlprus.service;
 
 import com.petrpopov.opennlprus.other.WebMessage;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.listener.SessionAwareMessageListener;
 import org.springframework.stereotype.Component;
 
@@ -20,8 +21,11 @@ import java.io.Serializable;
 @Component
 public class MessageReciever implements SessionAwareMessageListener {
 
-  //  @Autowired
-//    private LuceneService luceneService;
+    @Autowired
+    private LuceneService luceneService;
+
+    @Autowired
+    private GeoSearcher geoSearcher;
 
     private Logger logger = Logger.getLogger(MessageReciever.class);
 
@@ -39,21 +43,29 @@ public class MessageReciever implements SessionAwareMessageListener {
 
         WebMessage webMessage = (WebMessage) object;
         logger.info("Message recieved: " + webMessage.getUrl());
-       /*
+
         try {
-            boolean contains = luceneService.contains(webMessage);
+            boolean contains = luceneService.containsUrl(webMessage);
 
             if( !contains ) {
-                logger.info("Object is not in the index. Adding.");
+                logger.info("Object is not in the index. Adding");
 
                 luceneService.addDocument(webMessage);
+
+                logger.info("Looking for geo locations in message");
+                int count = geoSearcher.containsGeoName(webMessage);
+
+                if(count == 0)
+                    return;
+
+                logger.info("Found " + count + " geo locations in message " + webMessage.getUrl() );
             }
             else {
-                logger.info("Object is in the index. Skipping.");
+                logger.info("Object is in the index. Skipping");
                 return;
             }
         } catch (Exception e) {
-
-        } */
+            e.printStackTrace();
+        }
     }
 }

@@ -1,7 +1,14 @@
 package com.petrpopov.opennlprus.service;
 
+import com.petrpopov.opennlprus.entity.Address;
+import com.petrpopov.opennlprus.other.WebMessage;
+import org.apache.log4j.Logger;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * User: petrpopov
@@ -12,33 +19,38 @@ import org.springframework.stereotype.Component;
 @Component
 public class GeoSearcher {
 
-
     @Autowired
     private AddressService addressService;
-    /*
-    public boolean containsGeoName(WebMessage message) throws IOException, ParseException {
 
-       for (Address address : addressService.getAddresses()) {
+    @Autowired
+    private LuceneService luceneService;
 
-            if( address.getId().equals("5c8b06f1-518e-496e-b683-7bf917e0d70b"))
-                System.out.println("moscow");
+    private Logger logger = Logger.getLogger(GeoSearcher.class);
 
-            /*
-            List<String> list = luceneService.search(address.getFormalname(), "text");
+    public synchronized int containsGeoName(WebMessage message) throws IOException, ParseException {
+
+        logger.info("Searching for geo locations in: " + message);
+
+        int count = 0;
+        for (Address address : addressService.getAddresses()) {
+
+            logger.debug("Using addres for search: " + address);
+
+            String name = address.getFormalname();
+            name = name.replaceAll("[-]", " ").trim();
+
+            List<String> list = luceneService.search(name, "text");
             if( list.isEmpty() )
-                return false;
+                continue;
 
-            boolean ok = false;
             for (String url : list) {
                 if( url.equals(message.getUrl()) ) {
-                    ok = true;
+                    count++;
                     break;
                 }
             }
+        }
 
-            return ok;*/
-
-  /*
-        return false;
-    }*/
+        return count;
+    }
 }

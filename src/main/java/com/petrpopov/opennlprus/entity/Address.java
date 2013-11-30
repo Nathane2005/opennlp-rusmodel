@@ -51,7 +51,7 @@ public class Address {
 
     @Override
     public String toString() {
-        return "Address: " + formalname + " type: " + aolevel;
+        return "Address: \"" + formalname + "\", type: " + aolevel;
     }
 
     @Override

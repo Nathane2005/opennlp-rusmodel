@@ -1,7 +1,6 @@
 package com.petrpopov.opennlprus.main;
 
-import com.petrpopov.opennlprus.other.WebMessage;
-import com.petrpopov.opennlprus.service.LuceneService;
+import com.petrpopov.opennlprus.service.CrawlerManager;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -17,23 +16,18 @@ public class App {
                 new String[] {"spring/spring.xml"}, true);
 
 
-        WebMessage message = new WebMessage("http://ya.ru", "Висячий сад это уникаьлный по своей структуре " +
-                "и природе жкспонат, который был создан в Московской области задолго до нашей эры древними греками " +
-                "в полнолуние, после того, как они упоролись метамфетамином и водкой Журавли.");
+        /*WebMessage message = new WebMessage("http://ya.ru", "Власти Москвы и Саратова решили расширять границы столицы и приняли решение" +
+                " о принудительном сексе и сну-сну среди населения.");
 
-        LuceneService bean = context.getBean(LuceneService.class);
-        bean.addDocument(message);
+        WebMessage message1 = new WebMessage("http://www.ru", "asfasfaf");
 
-        bean.search("Московская область", "text");
+        LuceneService luceneService = context.getBean(LuceneService.class);
+        luceneService.addDocument(message);
+        luceneService.addDocument(message1);
 
-        //GeoSearcher searcher = context.getBean(GeoSearcher.class);
-        //searcher.containsGeoName(message);
+        luceneService.search("Москва");*/
 
-        // AddressDao addressDao = context.getBean(AddressDao.class);
-       // Address address = addressDao.find("00000e97-4287-4b0e-ac97-346ca29e5f39");
-
-
-       // CrawlerManager manager = context.getBean(CrawlerManager.class);
-        //manager.start("http://www.rbc.ru/");
+        CrawlerManager manager = context.getBean(CrawlerManager.class);
+        manager.start("http://lenta.ru/");
     }
 }

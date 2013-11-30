@@ -1,6 +1,7 @@
 package com.petrpopov.opennlprus.service;
 
 import com.petrpopov.opennlprus.other.WebMessage;
+import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.ru.RussianAnalyzer;
 import org.apache.lucene.document.Document;
@@ -37,6 +38,9 @@ public class LuceneService {
     private volatile Directory dirIndex;
     private volatile IndexWriterConfig config;
     private volatile Analyzer analyzer;
+    private volatile IndexWriter writer;
+
+    private Logger logger = Logger.getLogger(LuceneService.class);
 
     @PostConstruct
     public void init() throws IOException {
@@ -62,43 +66,51 @@ public class LuceneService {
         //doc.add(new TextField("url", url, Field.Store.YES));
         //doc.add(new TextField("text", text, Field.Store.YES));
 
-        IndexWriter writer = getIndexWriter();
+        writer = getIndexWriter();
         writer.addDocument(doc);
-        writer.close();
+        writer.commit();
+        //writer.close();
     }
 
     public boolean containsUrl(WebMessage message) throws IOException, ParseException {
 
         List<String> res = search(message.getUrl(), "url");
 
-        if( res.isEmpty() )
-            return false;
-
-        return true;
+        return !res.isEmpty();
     }
 
     public synchronized void search(String q) throws IOException, ParseException {
         search(q, "text");
     }
 
-    public synchronized List<String> search(String q, String field) throws IOException, ParseException {
+    public synchronized List<String> search(String q, String field) throws IOException {
 
-        IndexReader reader = DirectoryReader.open(getDirIndex());
+        List<String> res = new ArrayList<String>();
+
+        IndexReader reader = null;
+        try {
+            reader = DirectoryReader.open(getDirIndex());
+        } catch (IOException e) {
+            return res;
+        }
         IndexSearcher is = new IndexSearcher(reader);
 
 
         QueryParser parser = new QueryParser(Version.LUCENE_46, field, getAnalyzer());
         parser.setDefaultOperator(QueryParser.Operator.AND);
 
-        Query query = parser.parse(q);
+        Query query = null;
+        try {
+            query = parser.parse(q);
+        } catch (ParseException e) {
+            return res;
+        }
 
         TopDocs docs = is.search(query, 10);
 
-        List<String> res = new ArrayList<String>();
-
         for (ScoreDoc scoreDoc : docs.scoreDocs) {
             Document doc = is.doc(scoreDoc.doc);
-            System.out.println("Found document: " + doc.get("text"));
+            logger.debug("Found document: " + doc.get("url"));
 
             res.add(doc.get("url"));
         }
@@ -107,7 +119,8 @@ public class LuceneService {
     }
 
     private IndexWriter getIndexWriter() throws IOException {
-        IndexWriter writer = new IndexWriter(getDirIndex(), getConfig());
+        if( writer == null )
+            writer = new IndexWriter(getDirIndex(), getConfig());
         return writer;
     }
 
