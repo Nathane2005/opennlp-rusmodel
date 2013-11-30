@@ -32,6 +32,7 @@
                 </amq:tempUsage>
             </amq:systemUsage>
         </amq:systemUsage>
+
     </amq:broker>
     <amq:queue id="destination"  physicalName="webtext.queue"/>
     <amq:connectionFactory id="connectionFactory" brokerURL="vm://localhost"/>

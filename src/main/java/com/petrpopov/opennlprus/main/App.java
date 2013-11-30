@@ -27,6 +27,8 @@ public class App {
 
         luceneService.search("Москва");*/
 
+
+
         CrawlerManager manager = context.getBean(CrawlerManager.class);
         manager.start("http://lenta.ru/");
     }

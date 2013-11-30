@@ -31,6 +31,7 @@ public class CrawlerManager {
 
         CrawlConfig config = new CrawlConfig();
         config.setCrawlStorageFolder(crawlLocation);
+        config.setMaxPagesToFetch(2);
 
         PageFetcher pageFetcher = new PageFetcher(config);
         RobotstxtConfig robotstxtConfig = new RobotstxtConfig();

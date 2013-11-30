@@ -1,5 +1,6 @@
 package com.petrpopov.opennlprus.service;
 
+import com.petrpopov.opennlprus.other.ParseMessage;
 import com.petrpopov.opennlprus.other.WebMessage;
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
@@ -57,6 +58,11 @@ public class LuceneService {
         addDocument(message.getUrl(), message.getText());
     }
 
+    public synchronized void addDocument(ParseMessage message) throws IOException {
+
+        addDocument(message.getMessageUrl().getUrl(), message.getMessageUrl().getNumber(), message.getText());
+    }
+
     public synchronized void addDocument(String url, String text) throws IOException {
 
         Document doc = new Document();
@@ -70,6 +76,19 @@ public class LuceneService {
         writer.addDocument(doc);
         writer.commit();
         //writer.close();
+    }
+
+    public synchronized void addDocument(String url, Integer number, String text) throws IOException {
+        Document doc = new Document();
+
+        doc.add(new Field("url", url, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+        doc.add(new Field("text", text, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+        doc.add(new Field("number", number.toString(), Field.Store.YES,
+                Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+
+        writer = getIndexWriter();
+        writer.addDocument(doc);
+        writer.commit();
     }
 
     public boolean containsUrl(WebMessage message) throws IOException, ParseException {
