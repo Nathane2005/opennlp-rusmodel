@@ -37,7 +37,6 @@
     <orderEntry type="library" name="Maven: asm:asm:3.3.1" level="project" />
     <orderEntry type="library" name="Maven: com.drewnoakes:metadata-extractor:2.4.0-beta-1" level="project" />
     <orderEntry type="library" name="Maven: de.l3s.boilerpipe:boilerpipe:1.1.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.lucene:lucene-core:4.6.0" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.6" level="project" />
     <orderEntry type="library" name="Maven: cglib:cglib:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:3.2.4.RELEASE" level="project" />
@@ -77,6 +76,7 @@
     <orderEntry type="library" name="Maven: org.apache.xbean:xbean-spring:3.12" level="project" />
     <orderEntry type="library" name="Maven: org.apache.activemq:activemq-pool:5.8.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-jta_1.0.1B_spec:1.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.lucene:lucene-core:4.6.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.lucene:lucene-analyzers-common:4.6.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.lucene:lucene-queryparser:4.6.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.lucene:lucene-queries:4.6.0" level="project" />

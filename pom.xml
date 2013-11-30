@@ -47,13 +47,6 @@
             <artifactId>crawler4j</artifactId>
             <version>3.5</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-core</artifactId>
-            <version>3.6.2</version>
-        </dependency>
-
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -92,8 +85,6 @@
             <artifactId>spring-jms</artifactId>
             <version>${spring.version}</version>
         </dependency>
-
-
         <!-- end of spring -->
 
         <!-- hibernate -->
