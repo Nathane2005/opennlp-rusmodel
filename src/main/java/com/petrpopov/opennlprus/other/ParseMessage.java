@@ -49,6 +49,6 @@ public class ParseMessage implements Serializable {
 
     @Override
     public String toString() {
-        return "ParseMessage: " + messageUrl;
+        return "ParseMessage: " + messageUrl + ", text: " + text;
     }
 }

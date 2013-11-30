@@ -36,9 +36,13 @@ public class WebMessageAnalyzer {
         try {
             List<ParseMessage> list = splitter.split(webMessage);
             for (ParseMessage parseMessage : list) {
+                logger.info("Checking if message object is in the index");
                 boolean contains = messageKeeper.contains(parseMessage);
-                if( contains )
+                if( contains ) {
+                    logger.info("Message object is in the index. Skip");
                     continue;
+                }
+
 
                 logger.info("Message object is not in the index. Adding");
                 messageKeeper.add(parseMessage);

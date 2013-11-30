@@ -1,5 +1,6 @@
 package com.petrpopov.opennlprus.service;
 
+import com.google.common.base.Strings;
 import com.petrpopov.opennlprus.other.ParseMessage;
 import com.petrpopov.opennlprus.other.WebMessage;
 import org.springframework.stereotype.Component;
@@ -36,18 +37,31 @@ public class Splitter {
 
         List<String> res = new ArrayList<String>();
 
-        String[] split = text.split("\\s{2,}");
+        String[] split = text.split("\\s{3,}");
         for (String s : split) {
 
-            String[] strings = s.split(".");
+            if(Strings.isNullOrEmpty(s) )
+                continue;
 
+            String work = s.trim();
+            if( Strings.isNullOrEmpty(work))
+                continue;
+
+            work.replaceAll("\\s+", "");
+
+            String[] strings = work.split(".");
             if( strings.length > 0 ) {
+
                 for (String string : strings) {
-                    res.add(string);
+                    String el = string.trim();
+                    if( Strings.isNullOrEmpty(el) )
+                        continue;
+
+                    res.add(el);
                 }
             }
             else {
-                res.add(s);
+                res.add(work);
             }
         }
 
