@@ -1,6 +1,5 @@
 package com.petrpopov.opennlprus.service;
 
-import com.petrpopov.opennlprus.entity.Address;
 import com.petrpopov.opennlprus.other.ParseMessage;
 import org.apache.log4j.Logger;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -39,20 +38,17 @@ public class GeoSearcher {
         int count = 0;
         List<String> found = new ArrayList<String>();
 
-        for (Address address : addressService.getAddresses()) {
+        for (String address : addressService.getAddresses()) {
 
             logger.debug("Using address for search: " + address);
 
-            String name = address.getFormalname();
-            name = name.replaceAll("[-]", " ").trim();
-
-            List<String> list = luceneService.search(name, "text");
+            List<String> list = luceneService.search(address, "text");
             if( list.isEmpty() )
                 continue;
 
             for (String url1 : list) {
                 if( url1.equals(url) ) {
-                    found.add(name);
+                    found.add(address);
                     count++;
                     break;
                 }

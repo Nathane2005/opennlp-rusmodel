@@ -22,6 +22,9 @@ public class Address {
     @Column(name = "formalname", length = 120)
     private String formalname;
 
+    @Column(name = "shortname", length = 10)
+    private String shortname;
+
     @Column(name = "aolevel")
     private Integer aolevel;
 
@@ -47,6 +50,14 @@ public class Address {
 
     public void setAolevel(Integer aolevel) {
         this.aolevel = aolevel;
+    }
+
+    public String getShortname() {
+        return shortname;
+    }
+
+    public void setShortname(String shortname) {
+        this.shortname = shortname;
     }
 
     @Override

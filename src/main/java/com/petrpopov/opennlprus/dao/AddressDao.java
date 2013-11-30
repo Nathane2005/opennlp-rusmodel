@@ -20,7 +20,7 @@ public class AddressDao extends EntityDao<Address> {
         super(Address.class);
     }
 
-    public List<Address> findAllCities() {
+    public List<Address> findAllMajor() {
 
         String query = "select a from " + Address.class.getName() +
                 " a where a.aolevel = :aolevel1 or a.aolevel = :aolevel2";
