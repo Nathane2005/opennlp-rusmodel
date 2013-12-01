@@ -49,7 +49,7 @@ public class Splitter {
 
             work.replaceAll("\\s+", "");
 
-            String[] strings = work.split(".");
+            String[] strings = work.split("[.!?]");
             if( strings.length > 0 ) {
 
                 for (String string : strings) {

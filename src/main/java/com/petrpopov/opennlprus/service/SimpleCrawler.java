@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
  */
 public class SimpleCrawler extends WebCrawler {
 
-    private String url;
+    private List<String> urls;
 
     private Logger logger = Logger.getLogger(SimpleCrawler.class);
 
@@ -39,17 +39,27 @@ public class SimpleCrawler extends WebCrawler {
         if( manager == null )
             throw new RuntimeException("No fucking SpringContext initialized !");
 
-        this.url = manager.getUrl();
-        if( this.url == null )
-            throw new RuntimeException("No url in CrawlerManager !");
+        this.urls = manager.getUrls();
+        if( this.urls == null )
+            throw new RuntimeException("No urls in CrawlerManager !");
+
+        if( this.urls.isEmpty() )
+            throw new RuntimeException("No urls in CrawlerManager !");
     }
 
     @Override
-    public boolean shouldVisit(WebURL url) {
+    public boolean shouldVisit(WebURL webUrl) {
 
-        String href = url.getURL().toLowerCase();
-        boolean res = !FILTERS.matcher(href).matches() && href.startsWith(this.url);
-        return res;
+        String href = webUrl.getURL().toLowerCase();
+
+        boolean b = !FILTERS.matcher(href).matches();
+        for (String url : this.urls) {
+            boolean res = b && href.startsWith(url);
+            if( res )
+                return res;
+        }
+
+        return false;
     }
 
     @Override

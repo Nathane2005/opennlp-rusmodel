@@ -1,5 +1,9 @@
 package com.petrpopov.opennlprus.entity;
 
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 
 /**
@@ -10,17 +14,30 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "web_text")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "web_text")
 public class WebText {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "url", unique = true)
+    @Column(name = "url")
     private String url;
 
-    @Column(name = "text", columnDefinition = "text")
+    @Column(name = "number")
+    private Integer number;
+
+    @Column(name = "text", columnDefinition = "text", unique = true)
     private String text;
+
+    public WebText() {
+    }
+
+    public WebText(String url, Integer number, String text) {
+        this.url = url;
+        this.number = number;
+        this.text = text;
+    }
 
     public Long getId() {
         return id;
@@ -36,6 +53,14 @@ public class WebText {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     public String getText() {

@@ -24,6 +24,12 @@ public class MessageReciever implements SessionAwareMessageListener {
     @Autowired
     private WebMessageAnalyzer webMessageAnalyzer;
 
+    @Autowired
+    private WebMessageService webMessageService;
+
+    @Autowired
+    private CrawlerManager crawlerManager;
+
     private Logger logger = Logger.getLogger(MessageReciever.class);
 
     @Override
@@ -40,7 +46,13 @@ public class MessageReciever implements SessionAwareMessageListener {
 
         WebMessage webMessage = (WebMessage) object;
         logger.info("Message recieved: " + webMessage.getUrl());
+        if( crawlerManager.isStopped() ) {
+            logger.info("Enough messages, skip");
+            return;
+        }
 
-        webMessageAnalyzer.analyze(webMessage);
+        //webMessageAnalyzer.analyze(webMessage);
+        webMessageService.save(webMessage);
+        webMessageService.stopIfNeed();
     }
 }

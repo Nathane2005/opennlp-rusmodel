@@ -1,8 +1,10 @@
 package com.petrpopov.opennlprus.dao;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +33,12 @@ public class EntityDao<T> {
 
     public EntityDao(Class<T> domainClass) {
         this.domainClass = domainClass;
+    }
+
+    public Long count() {
+        Criteria criteria = currentSession().createCriteria(domainClass);
+        Number number = (Number) criteria.setProjection(Projections.rowCount()).uniqueResult();
+        return number.longValue();
     }
 
     public List<T> findAll()
@@ -63,7 +71,6 @@ public class EntityDao<T> {
     public List<T> findByQuery(String querySource, String name, Object param)
     {
         Query query = createQuery(querySource);
-
         query.setParameter(name, param);
 
         List<T> list = query.list();

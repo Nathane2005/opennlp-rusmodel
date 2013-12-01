@@ -46,7 +46,7 @@
 
                 <!-- Show and format SQL via log4j -->
                 <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
-                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
 
                 <prop key="hibernate.connection.autocommit">false</prop>
                 <prop key="hibernate.order_inserts">true</prop>
@@ -56,9 +56,9 @@
 
 
                 <!-- Second level cache -->
-                <!--prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
                 <prop key="hibernate.cache.use_second_level_cache">true</prop>
-                <prop key="hibernate.cache.use_query_cache">true</prop-->
+                <prop key="hibernate.cache.use_query_cache">true</prop>
 
                 <!-- Show cache and using statistics -->
                 <prop key="hibernate.generate_statistics">true</prop>

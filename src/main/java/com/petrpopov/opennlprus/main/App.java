@@ -3,6 +3,9 @@ package com.petrpopov.opennlprus.main;
 import com.petrpopov.opennlprus.service.CrawlerManager;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * User: petrpopov
  * Date: 26.11.13
@@ -13,7 +16,7 @@ public class App {
     public static void main(String[] args) throws Exception {
 
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
-                new String[] {"spring/spring.xml"}, true);
+                new String[] {"spring/applicationContext.xml"}, true);
 
 
         /*WebMessage message = new WebMessage("http://ya.ru", "Власти Москвы и Саратова решили расширять границы столицы и приняли решение" +
@@ -28,7 +31,10 @@ public class App {
         luceneService.search("Москва");*/
 
 
+        List<String> urls = new ArrayList<String>();
+        urls.add("http://ria.ru/");
+
         CrawlerManager manager = context.getBean(CrawlerManager.class);
-        manager.start("http://lenta.ru/");
+        manager.start(urls);
     }
 }
