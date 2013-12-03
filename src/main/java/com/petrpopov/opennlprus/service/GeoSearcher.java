@@ -2,6 +2,7 @@ package com.petrpopov.opennlprus.service;
 
 import com.petrpopov.opennlprus.dao.GeoWebTextDao;
 import com.petrpopov.opennlprus.dao.WebTextDao;
+import com.petrpopov.opennlprus.entity.GeoWebText;
 import com.petrpopov.opennlprus.entity.WebText;
 import com.petrpopov.opennlprus.other.ParseMessage;
 import org.apache.log4j.Logger;
@@ -39,6 +40,8 @@ public class GeoSearcher {
 
     public void uberFuckingMethod() throws IOException, InvalidTokenOffsetsException {
 
+        logger.info("Preparing the big fucking index");
+
         List<WebText> list = webTextDao.findAll();
         for (WebText webText : list) {
             if(webText.getText().length() >= 200 )
@@ -49,8 +52,33 @@ public class GeoSearcher {
             luceneService.addDocument(webText.getUrl(), webText.getNumber(), webText.getText());
         }
 
+        logger.info("End of preparing index");
 
-        luceneService.searchGeo("Непал");
+
+        int i = 1;
+        List<String> addresses = addressService.getAddresses();
+        for (String address : addresses) {
+            if( i == 10 ) {
+                break;
+            }
+
+            logger.info(i + ":" + addresses.size() + " Searching for address: " + address);
+
+            List<ParseMessage> geo = luceneService.searchGeo(address);
+            for (ParseMessage message : geo) {
+                GeoWebText geoWebText = new GeoWebText();
+
+                geoWebText.setUrl(message.getMessageUrl().getUrl());
+                geoWebText.setNumber(message.getMessageUrl().getNumber());
+                geoWebText.setText(message.getText());
+
+                geoWebTextDao.save(geoWebText);
+            }
+
+
+            i++;
+        }
+
     }
 
     public synchronized int containsGeoName(ParseMessage message) throws IOException, ParseException {

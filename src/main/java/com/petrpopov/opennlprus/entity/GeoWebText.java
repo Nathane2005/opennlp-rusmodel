@@ -25,7 +25,7 @@ public class GeoWebText {
     @Column(name = "number")
     private Integer number;
 
-    @Column(name = "text", columnDefinition = "text", unique = true)
+    @Column(name = "text", columnDefinition = "text")
     private String text;
 
     public GeoWebText() {

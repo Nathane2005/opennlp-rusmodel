@@ -48,6 +48,7 @@ public class LuceneService {
         analyzer = new RussianAnalyzer(Version.LUCENE_46);
         config = new IndexWriterConfig(Version.LUCENE_46, analyzer);
         config.setOpenMode(IndexWriterConfig.OpenMode.CREATE); // Rewrite old index
+        config.setMaxBufferedDeleteTerms(1);
     }
 
     public synchronized void addDocument(WebMessage message) throws IOException {
@@ -78,6 +79,7 @@ public class LuceneService {
     public synchronized void addDocument(String url, Integer number, String text) throws IOException {
         Document doc = new Document();
 
+        doc.add(new Field("id", url+number.toString(), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
         doc.add(new Field("url", url, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
 
         FieldType type = new FieldType();
@@ -139,7 +141,7 @@ public class LuceneService {
 
         for (ScoreDoc scoreDoc : docs.scoreDocs) {
             Document doc = is.doc(scoreDoc.doc);
-            logger.debug("Found document: " + doc.get("url"));
+            logger.info("Found document: " + doc.get("text"));
 
             res.add(doc.get("url"));
         }
@@ -147,9 +149,9 @@ public class LuceneService {
         return res;
     }
 
-    public synchronized List<String> searchGeo(String q) throws IOException, InvalidTokenOffsetsException {
+    public synchronized List<ParseMessage> searchGeo(String q) throws IOException, InvalidTokenOffsetsException {
 
-        List<String> res = new ArrayList<String>();
+        List<ParseMessage> res = new ArrayList<ParseMessage>();
 
         IndexReader reader = null;
         try {
@@ -171,7 +173,7 @@ public class LuceneService {
         }
 
         QueryScorer scorer = new QueryScorer(query, "text");
-        SimpleHTMLFormatter formatter = new SimpleHTMLFormatter("<b>","</b>");
+        SimpleHTMLFormatter formatter = new SimpleHTMLFormatter("<START:location>","<END>");
         Highlighter highlighter = new Highlighter(formatter, scorer);
         highlighter.setTextFragmenter(new SimpleSpanFragmenter(scorer, Integer.MAX_VALUE));
 
@@ -179,11 +181,12 @@ public class LuceneService {
 
         is.search(query, collector);
 
+
         TopDocs hits = collector.topDocs();
         ScoreDoc[] scoreDocs = hits.scoreDocs;
         for (ScoreDoc scoreDoc : scoreDocs) {
             Document doc = is.doc(scoreDoc.doc);
-            logger.info("Found document: " + doc.get("text"));
+            //logger.info("Found document: " + doc.get("text"));
 
 
             int id = scoreDoc.doc;
@@ -193,8 +196,10 @@ public class LuceneService {
 
             for (int j = 0; j < frag.length; j++) {
                 if ((frag[j] != null) && (frag[j].getScore() > 0)) {
-                    System.out.println((frag[j].toString()));
-                    res.add(frag[j].toString());
+
+                    String docText = frag[j].toString();
+                    logger.info("Found document: " + docText);
+                    res.add(new ParseMessage(doc.get("url"), Integer.parseInt(doc.get("number")), docText));
                 }
             }
         }

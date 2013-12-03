@@ -16,11 +16,6 @@ public class App {
                 new String[] {"spring/applicationContext.xml"}, true);
 
 
-       /* LuceneService service = context.getBean(LuceneService.class);
-        service.addDocument("http://ya.ru", 0, "Привет, Москва, с вами говорит Москва.");
-        service.addDocument("http://ya.ru", 0, "Москва и москвичи - о чем молчит бессознательное.");
-        service.searchGeo("Москва");*/
-
         GeoSearcher searcher = context.getBean(GeoSearcher.class);
         searcher.uberFuckingMethod();
 

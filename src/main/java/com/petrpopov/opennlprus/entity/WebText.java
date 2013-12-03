@@ -27,7 +27,7 @@ public class WebText {
     @Column(name = "number")
     private Integer number;
 
-    @Column(name = "text", columnDefinition = "text", unique = true)
+    @Column(name = "text", columnDefinition = "text", unique = true, length = 1000)
     private String text;
 
     public WebText() {
