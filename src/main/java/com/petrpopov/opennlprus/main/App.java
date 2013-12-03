@@ -1,10 +1,7 @@
 package com.petrpopov.opennlprus.main;
 
-import com.petrpopov.opennlprus.service.CrawlerManager;
+import com.petrpopov.opennlprus.service.GeoSearcher;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * User: petrpopov
@@ -19,22 +16,29 @@ public class App {
                 new String[] {"spring/applicationContext.xml"}, true);
 
 
-        /*WebMessage message = new WebMessage("http://ya.ru", "Власти Москвы и Саратова решили расширять границы столицы и приняли решение" +
-                " о принудительном сексе и сну-сну среди населения.");
+       /* LuceneService service = context.getBean(LuceneService.class);
+        service.addDocument("http://ya.ru", 0, "Привет, Москва, с вами говорит Москва.");
+        service.addDocument("http://ya.ru", 0, "Москва и москвичи - о чем молчит бессознательное.");
+        service.searchGeo("Москва");*/
 
-        WebMessage message1 = new WebMessage("http://www.ru", "asfasfaf");
+        GeoSearcher searcher = context.getBean(GeoSearcher.class);
+        searcher.uberFuckingMethod();
 
-        LuceneService luceneService = context.getBean(LuceneService.class);
-        luceneService.addDocument(message);
-        luceneService.addDocument(message1);
-
-        luceneService.search("Москва");*/
-
-
-        List<String> urls = new ArrayList<String>();
+        //GeoSearcher searcher = context.getBean(GeoSearcher.class);
+        //searcher.uberFuckingMethod();
+       /* List<String> urls = new ArrayList<String>();
         urls.add("http://ria.ru/");
+        urls.add("http://lenta.ru/");
+        urls.add("http://rbc.ru/");
+        urls.add("http://www.bfm.ru/");
+        urls.add("http://www.gazeta.ru/");
+        urls.add("http://www.bbc.co.uk/russian");
+        urls.add("http://www.kp.ru/");
+        urls.add("http://www.interfax.ru/");
+        urls.add("http://dni.ru/");
+        urls.add("http://www.rg.ru/");
 
         CrawlerManager manager = context.getBean(CrawlerManager.class);
-        manager.start(urls);
+        manager.start(urls); */
     }
 }

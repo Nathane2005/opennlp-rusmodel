@@ -3,4 +3,5 @@
     <defaultCache eternal="true" maxElementsInMemory="1000000" overflowToDisk="false" />
     <cache name="sentences" maxElementsInMemory="1000000" eternal="true" overflowToDisk="true" />
     <cache name="web_text" maxElementsInMemory="10000000" eternal="true" overflowToDisk="true"/>
+    <cache name="geo_web_text" maxElementsInMemory="10000000" eternal="true" overflowToDisk="true"/>
 </ehcache>

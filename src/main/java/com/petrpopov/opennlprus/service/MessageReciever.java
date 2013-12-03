@@ -3,6 +3,7 @@ package com.petrpopov.opennlprus.service;
 import com.petrpopov.opennlprus.other.WebMessage;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.listener.SessionAwareMessageListener;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +33,11 @@ public class MessageReciever implements SessionAwareMessageListener {
 
     private Logger logger = Logger.getLogger(MessageReciever.class);
 
+    private volatile long messageNumber = 0;
+
+    @Value("${links_limit}")
+    private Long linksLimit;
+
     @Override
     public void onMessage(Message message, Session session) throws JMSException {
 
@@ -44,8 +50,16 @@ public class MessageReciever implements SessionAwareMessageListener {
         if( !(object instanceof WebMessage) )
             return;
 
+        increment();
+
+        if( getMessageNumber() >= linksLimit ) {
+            logger.info("Enough crawling !");
+            crawlerManager.stop();
+            return;
+        }
+
         WebMessage webMessage = (WebMessage) object;
-        logger.info("Message recieved: " + webMessage.getUrl());
+        logger.info("Message number " + getMessageNumber()+ " recieved: " + webMessage.getUrl());
         if( crawlerManager.isStopped() ) {
             logger.info("Enough messages, skip");
             return;
@@ -54,5 +68,13 @@ public class MessageReciever implements SessionAwareMessageListener {
         //webMessageAnalyzer.analyze(webMessage);
         webMessageService.save(webMessage);
         webMessageService.stopIfNeed();
+    }
+
+    private synchronized void increment() {
+        messageNumber++;
+    }
+
+    private synchronized long getMessageNumber() {
+        return messageNumber;
     }
 }

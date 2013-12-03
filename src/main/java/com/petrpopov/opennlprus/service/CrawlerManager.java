@@ -26,6 +26,9 @@ public class CrawlerManager {
     @Value("${crawl_numbers}")
     private Integer numberOfCrawlers;
 
+    @Value("${links_limit}")
+    private Integer linksLimit;
+
     private List<String> urls;
 
     private CrawlController controller;
@@ -44,7 +47,7 @@ public class CrawlerManager {
 
         CrawlConfig config = new CrawlConfig();
         config.setCrawlStorageFolder(crawlLocation);
-      //  config.setMaxPagesToFetch(2);
+        config.setMaxPagesToFetch(linksLimit);
 
         PageFetcher pageFetcher = new PageFetcher(config);
         RobotstxtConfig robotstxtConfig = new RobotstxtConfig();

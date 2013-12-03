@@ -26,11 +26,12 @@ public class AddressDao extends EntityDao<Address> {
     public List<Address> findAllMajor() {
 
         String query = "select a from " + Address.class.getName() +
-                " a where a.aolevel = :aolevel1 or a.aolevel = :aolevel2";
+                " a where a.aolevel = :aolevel1 or a.aolevel = :aolevel2 or a.aolevel = :aolevel3";
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("aolevel1", 1);
         params.put("aolevel2", 4);
+        params.put("aolevel3", 3);
 
         List<Address> list = this.findByQuery(query, params);
 
