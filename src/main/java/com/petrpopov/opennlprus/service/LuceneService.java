@@ -15,11 +15,15 @@ import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.search.highlight.*;
 import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.IOContext;
 import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.store.SimpleFSDirectory;
 import org.apache.lucene.util.Version;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +37,9 @@ import java.util.List;
 @Component
 public class LuceneService {
 
+    @Value("${lucene_location}")
+    private String LUCENE_INDEX_LOCATION;
+
     private volatile Directory dirIndex;
     private volatile IndexWriterConfig config;
     private volatile Analyzer analyzer;
@@ -43,7 +50,7 @@ public class LuceneService {
     @PostConstruct
     public void init() throws IOException {
 
-        dirIndex = new RAMDirectory();
+        dirIndex = new RAMDirectory(new SimpleFSDirectory(new File(LUCENE_INDEX_LOCATION)), IOContext.DEFAULT);
 
         analyzer = new RussianAnalyzer(Version.LUCENE_46);
         config = new IndexWriterConfig(Version.LUCENE_46, analyzer);

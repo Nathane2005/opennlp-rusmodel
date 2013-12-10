@@ -1,8 +1,10 @@
 package com.petrpopov.opennlprus.entity;
 
+import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+
 
 /**
  * User: petrpopov
@@ -12,7 +14,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "geo_web_text")
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "geo_web_text")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "geo_web_text")
 public class GeoWebText {
 
     @Id

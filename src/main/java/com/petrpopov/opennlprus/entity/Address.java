@@ -1,5 +1,8 @@
 package com.petrpopov.opennlprus.entity;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,6 +16,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="addrobj")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "address")
 public class Address {
 
     @Id

@@ -1,16 +1,15 @@
 package com.petrpopov.opennlprus.service;
 
 import com.google.common.base.Strings;
-import com.petrpopov.opennlprus.dao.AddressDao;
-import com.petrpopov.opennlprus.dao.CountryDao;
-import com.petrpopov.opennlprus.entity.Address;
-import com.petrpopov.opennlprus.entity.Country;
+import com.petrpopov.opennlprus.dao.*;
+import com.petrpopov.opennlprus.entity.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -32,11 +31,23 @@ public class AddressService {
     private final String LEVEL_LONG_3 = "республика";
     private final String LEVEL_LONG_5 = "район";
 
+    private  List<String> excludes = Arrays.asList("Донской");
+
     @Autowired
     private AddressDao addressDao;
 
     @Autowired
     private CountryDao countryDao;
+
+    @Autowired
+    private _CityDao cityDao;
+
+    @Autowired
+    private _CountryDao _countryDao;
+
+    @Autowired
+    private _RegionDao regionDao;
+
 
     private volatile List<String> addresses = new ArrayList<String>();
 
@@ -73,24 +84,88 @@ public class AddressService {
             }
 
             fullName = fullName.replaceAll("[-]", " ").trim();
-            if( !addresses.contains(fullName))
-                addresses.add(fullName);
+            if( !addresses.contains(fullName)) {
+                if( !excludes.contains(fullName)) {
+                    addresses.add(fullName);
+                }
+            }
 
             if( !Strings.isNullOrEmpty(shortName) ) {
-                if( !addresses.contains(shortName))
-                    addresses.add(shortName);
+                if( !addresses.contains(shortName))  {
+                    if( !excludes.contains(shortName)) {
+                        addresses.add(shortName);
+                    }
+                }
             }
         }
 
 
         List<Country> countryList = countryDao.findAll();
         for (Country country : countryList) {
-            if( !addresses.contains(country.getCountryName()) )
-                addresses.add(country.getCountryName());
+
+            String countryName = country.getCountryName();
+
+            if( !addresses.contains(countryName) ) {
+                if( !excludes.contains(countryName)) {
+                    addresses.add(countryName);
+                }
+            }
+
         }
 
 
         logger.info("Found " + addresses.size() + " major locations");
+
+
+        logger.info("Finding all countries...");
+        List<_Country> countries = _countryDao.findAll();
+        logger.info("Found " + countries.size() + " countries");
+
+        for (_Country country : countries) {
+
+            String title = country.getTitle();
+
+            if( !addresses.contains(title)) {
+                if( !excludes.contains(title) ) {
+                    addresses.add(title);
+                }
+            }
+
+        }
+
+
+        logger.info("Finding all regions...");
+        List<_Region> regions = regionDao.findAll();
+        logger.info("Found " + regions.size() + " regions");
+
+        for (_Region region : regions) {
+
+            String title = region.getTitle();
+
+            if( !addresses.contains(title)) {
+                if( !excludes.contains(title)) {
+                    addresses.add(title);
+                }
+            }
+        }
+
+
+        logger.info("Finding all cities...");
+        List<_City> cities = cityDao.findAll();
+        logger.info("Found " + cities.size() + " cities");
+
+        for (_City city : cities) {
+
+            String title = city.getTitle();
+            if( !addresses.contains(title)) {
+                if( !excludes.contains(title)) {
+                    addresses.add(title);
+                }
+            }
+        }
+
+
+        logger.info("FOUND " + addresses.size() + " TOTAL LOCATIONS");
     }
 
     public synchronized List<String> getAddresses() {

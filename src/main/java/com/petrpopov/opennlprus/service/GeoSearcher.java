@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -24,6 +25,9 @@ import java.util.List;
 @Component
 public class GeoSearcher {
 
+    @Value("${string_parse_max_length}")
+    private Integer STRING_PARSE_MAX_LENGTH;
+
     @Autowired
     private AddressService addressService;
 
@@ -38,13 +42,13 @@ public class GeoSearcher {
 
     private Logger logger = Logger.getLogger(GeoSearcher.class);
 
-    public void uberFuckingMethod() throws IOException, InvalidTokenOffsetsException {
+    public void buildIndex() throws IOException {
 
         logger.info("Preparing the big fucking index");
 
         List<WebText> list = webTextDao.findAll();
         for (WebText webText : list) {
-            if(webText.getText().length() >= 200 )
+            if(webText.getText().length() >= STRING_PARSE_MAX_LENGTH )
                 continue;
             if( webText.getText().contains("\n"))
                 continue;
@@ -53,12 +57,14 @@ public class GeoSearcher {
         }
 
         logger.info("End of preparing index");
+    }
 
+    public void uberFuckingMethod() throws IOException, InvalidTokenOffsetsException {
 
         int i = 1;
         List<String> addresses = addressService.getAddresses();
         for (String address : addresses) {
-            if( i == 10 ) {
+            if( i == 20 ) {
                 break;
             }
 

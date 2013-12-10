@@ -1,6 +1,10 @@
 package com.petrpopov.opennlprus.entity;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
+
 
 /**
  * User: petrpopov
@@ -10,6 +14,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "country")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "country")
 public class Country {
 
     @Id

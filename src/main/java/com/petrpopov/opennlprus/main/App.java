@@ -17,6 +17,7 @@ public class App {
 
 
         GeoSearcher searcher = context.getBean(GeoSearcher.class);
+
         searcher.uberFuckingMethod();
 
         //GeoSearcher searcher = context.getBean(GeoSearcher.class);

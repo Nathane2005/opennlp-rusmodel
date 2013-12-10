@@ -1,8 +1,6 @@
 package com.petrpopov.opennlprus.dao;
 
 import com.petrpopov.opennlprus.entity.Address;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -16,7 +14,6 @@ import java.util.Map;
  */
 
 @Component
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AddressDao extends EntityDao<Address> {
 
     public AddressDao() {
