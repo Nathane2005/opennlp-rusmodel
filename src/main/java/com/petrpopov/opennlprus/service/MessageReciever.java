@@ -1,6 +1,6 @@
 package com.petrpopov.opennlprus.service;
 
-import com.petrpopov.opennlprus.other.WebMessage;
+import com.petrpopov.opennlprus.support.WebMessage;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

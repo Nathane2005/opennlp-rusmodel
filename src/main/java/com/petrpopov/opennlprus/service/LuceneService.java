@@ -1,7 +1,7 @@
 package com.petrpopov.opennlprus.service;
 
-import com.petrpopov.opennlprus.other.ParseMessage;
-import com.petrpopov.opennlprus.other.WebMessage;
+import com.petrpopov.opennlprus.support.ParseMessage;
+import com.petrpopov.opennlprus.support.WebMessage;
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
@@ -206,7 +206,10 @@ public class LuceneService {
 
                     String docText = frag[j].toString();
                     logger.info("Found document: " + docText);
-                    res.add(new ParseMessage(doc.get("url"), Integer.parseInt(doc.get("number")), docText));
+
+                    ParseMessage parseMessage = new ParseMessage(doc.get("url"), Integer.parseInt(doc.get("number")), docText);
+                    parseMessage.setOriginalText(doc.get("text"));
+                    res.add(parseMessage);
                 }
             }
         }

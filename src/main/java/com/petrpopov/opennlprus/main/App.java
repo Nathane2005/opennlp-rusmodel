@@ -1,6 +1,5 @@
 package com.petrpopov.opennlprus.main;
 
-import com.petrpopov.opennlprus.service.GeoSearcher;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -16,9 +15,28 @@ public class App {
                 new String[] {"spring/applicationContext.xml"}, true);
 
 
-        GeoSearcher searcher = context.getBean(GeoSearcher.class);
+        //GeoSearcher searcher = context.getBean(GeoSearcher.class);
 
-        searcher.uberFuckingMethod();
+        //searcher.uberFuckingMethod();
+
+      /*
+        GeoWebTextDao bean = context.getBean(GeoWebTextDao.class);
+        List<GeoWebText> all = bean.findAll();
+
+        FileWriter fstream = new FileWriter("/Users/petrpopov/Downloads/modeltest.txt", true);
+        BufferedWriter out = new BufferedWriter(fstream);
+
+        //Close the output stream
+
+
+        for (GeoWebText geoWebText : all) {
+            String text = geoWebText.getText();
+            out.write(text);
+            out.newLine();
+        }
+
+        out.close();  */
+
 
         //GeoSearcher searcher = context.getBean(GeoSearcher.class);
         //searcher.uberFuckingMethod();

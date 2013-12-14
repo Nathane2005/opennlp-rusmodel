@@ -1,15 +1,13 @@
 package com.petrpopov.opennlprus.service;
 
-import com.google.common.base.Strings;
 import com.petrpopov.opennlprus.dao.*;
-import com.petrpopov.opennlprus.entity.*;
+import com.petrpopov.opennlprus.entity.GeoName;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -31,7 +29,6 @@ public class AddressService {
     private final String LEVEL_LONG_3 = "республика";
     private final String LEVEL_LONG_5 = "район";
 
-    private  List<String> excludes = Arrays.asList("Донской");
 
     @Autowired
     private AddressDao addressDao;
@@ -48,6 +45,9 @@ public class AddressService {
     @Autowired
     private _RegionDao regionDao;
 
+    @Autowired
+    private GeoNameDao geoNameDao;
+
 
     private volatile List<String> addresses = new ArrayList<String>();
 
@@ -58,6 +58,15 @@ public class AddressService {
 
         logger.info("Finding all major locations...");
 
+        List<GeoName> all = geoNameDao.findAll();
+        for (GeoName geoName : all) {
+            addresses.add(geoName.getTitle());
+        }
+
+
+        logger.info("FOUND " + addresses.size() + " TOTAL LOCATIONS");
+
+        /*
         List<Address> all = addressDao.findAllMajor();
         for (Address address : all) {
 
@@ -163,9 +172,9 @@ public class AddressService {
                 }
             }
         }
+              */
 
 
-        logger.info("FOUND " + addresses.size() + " TOTAL LOCATIONS");
     }
 
     public synchronized List<String> getAddresses() {

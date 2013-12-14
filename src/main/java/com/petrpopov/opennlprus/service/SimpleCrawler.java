@@ -1,7 +1,7 @@
 package com.petrpopov.opennlprus.service;
 
-import com.petrpopov.opennlprus.other.SpringContext;
-import com.petrpopov.opennlprus.other.WebMessage;
+import com.petrpopov.opennlprus.support.SpringContext;
+import com.petrpopov.opennlprus.support.WebMessage;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;

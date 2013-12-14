@@ -1,4 +1,4 @@
-package com.petrpopov.opennlprus.other;
+package com.petrpopov.opennlprus.support;
 
 import java.io.Serializable;
 
@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class ParseMessage implements Serializable {
 
     private String text;
+    private String originalText;
     private MessageUrl messageUrl;
 
     public ParseMessage() {
@@ -28,6 +29,18 @@ public class ParseMessage implements Serializable {
 
     public MessageUrl getMessageUrl() {
         return messageUrl;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getOriginalText() {
+        return originalText;
+    }
+
+    public void setOriginalText(String originalText) {
+        this.originalText = originalText;
     }
 
     @Override

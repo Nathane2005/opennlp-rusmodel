@@ -9,4 +9,5 @@
     <cache name="_cities" maxElementsInMemory="10000000" eternal="true" overflowToDisk="true"/>
     <cache name="_regions" maxElementsInMemory="10000000" eternal="true" overflowToDisk="true"/>
     <cache name="_countries" maxElementsInMemory="10000000" eternal="true" overflowToDisk="true"/>
+    <cache name="geo_name" maxElementsInMemory="10000000" eternal="true" overflowToDisk="true"/>
 </ehcache>

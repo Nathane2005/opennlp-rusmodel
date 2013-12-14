@@ -30,6 +30,9 @@ public class GeoWebText {
     @Column(name = "text", columnDefinition = "text")
     private String text;
 
+    @Column(name = "original_text", columnDefinition = "text")
+    private String originalText;
+
     public GeoWebText() {
     }
 
@@ -69,5 +72,13 @@ public class GeoWebText {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getOriginalText() {
+        return originalText;
+    }
+
+    public void setOriginalText(String originalText) {
+        this.originalText = originalText;
     }
 }

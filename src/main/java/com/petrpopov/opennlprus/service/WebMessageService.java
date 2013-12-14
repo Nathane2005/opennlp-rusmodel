@@ -2,8 +2,8 @@ package com.petrpopov.opennlprus.service;
 
 import com.petrpopov.opennlprus.dao.WebTextDao;
 import com.petrpopov.opennlprus.entity.WebText;
-import com.petrpopov.opennlprus.other.ParseMessage;
-import com.petrpopov.opennlprus.other.WebMessage;
+import com.petrpopov.opennlprus.support.ParseMessage;
+import com.petrpopov.opennlprus.support.WebMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

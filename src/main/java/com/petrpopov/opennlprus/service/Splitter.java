@@ -1,8 +1,8 @@
 package com.petrpopov.opennlprus.service;
 
 import com.google.common.base.Strings;
-import com.petrpopov.opennlprus.other.ParseMessage;
-import com.petrpopov.opennlprus.other.WebMessage;
+import com.petrpopov.opennlprus.support.ParseMessage;
+import com.petrpopov.opennlprus.support.WebMessage;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

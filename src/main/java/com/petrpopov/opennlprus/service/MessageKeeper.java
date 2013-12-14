@@ -1,6 +1,6 @@
 package com.petrpopov.opennlprus.service;
 
-import com.petrpopov.opennlprus.other.ParseMessage;
+import com.petrpopov.opennlprus.support.ParseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;

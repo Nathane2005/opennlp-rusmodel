@@ -4,7 +4,7 @@ import com.petrpopov.opennlprus.dao.GeoWebTextDao;
 import com.petrpopov.opennlprus.dao.WebTextDao;
 import com.petrpopov.opennlprus.entity.GeoWebText;
 import com.petrpopov.opennlprus.entity.WebText;
-import com.petrpopov.opennlprus.other.ParseMessage;
+import com.petrpopov.opennlprus.support.ParseMessage;
 import org.apache.log4j.Logger;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -40,6 +41,9 @@ public class GeoSearcher {
     @Autowired
     private WebTextDao webTextDao;
 
+    private  List<String> excludes = Arrays.asList("Донской", "Coupé", "Divišov", "Odón", "Pathé"
+    ,"Абу", "Абана", "Абаев", "Аббас", "Абдуллах", "Абдулла", "Абдулово", "Абрамов", "Абдуллу");
+
     private Logger logger = Logger.getLogger(GeoSearcher.class);
 
     public void buildIndex() throws IOException {
@@ -64,19 +68,52 @@ public class GeoSearcher {
         int i = 1;
         List<String> addresses = addressService.getAddresses();
         for (String address : addresses) {
-            if( i == 20 ) {
-                break;
-            }
-
             logger.info(i + ":" + addresses.size() + " Searching for address: " + address);
 
-            List<ParseMessage> geo = luceneService.searchGeo(address);
+            String q = address.trim();
+            if( excludes.contains(q) )
+                continue;
+
+            List<ParseMessage> geo = luceneService.searchGeo(q);
             for (ParseMessage message : geo) {
+
+                boolean ok = true;
+                String text = message.getText();
+                for (String exclude : excludes) {
+                    if( text.contains(exclude) ) {
+                        ok = false;
+                        break;
+                    }
+                }
+
+                if( !ok )
+                    continue;
+
+                String url = message.getMessageUrl().getUrl();
+                if( url.contains("sport"))
+                    continue;
+
+                int length = 0;
+                int i1 = text.indexOf("<START");
+                if( i1 >= 0 ) {
+                    int i2 = text.indexOf("END>");
+                    if( i2 >= 0 ) {
+                        String cut = text.substring(0, i1) + text.substring(i2+1+3);
+                        length = cut.length();
+                    }
+                }
+
+                if( length < 10 ) {
+                    continue;
+                }
+
+
                 GeoWebText geoWebText = new GeoWebText();
 
-                geoWebText.setUrl(message.getMessageUrl().getUrl());
+                geoWebText.setUrl(url);
                 geoWebText.setNumber(message.getMessageUrl().getNumber());
-                geoWebText.setText(message.getText());
+                geoWebText.setText(text);
+                geoWebText.setOriginalText(message.getOriginalText());
 
                 geoWebTextDao.save(geoWebText);
             }
