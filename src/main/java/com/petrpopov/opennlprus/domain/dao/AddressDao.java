@@ -1,6 +1,6 @@
-package com.petrpopov.opennlprus.dao;
+package com.petrpopov.opennlprus.domain.dao;
 
-import com.petrpopov.opennlprus.entity.Address;
+import com.petrpopov.opennlprus.domain.entity.Address;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.petrpopov.opennlprus.entity;
+package com.petrpopov.opennlprus.domain.entity;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -9,25 +9,18 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * Created by petrpopov on 10.12.13.
+ * Created by petrpopov on 12.12.13.
  */
 
 @Entity
-@Table(name="_cities")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "_cities")
-public class _City {
+@Table(name = "geo_name")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "geo_name")
+public class GeoName {
 
     @Id
-    @Column(name = "city_id")
     private Long id;
 
-    @Column(name = "region_id")
-    private Long regionId;
-
-    @Column(name = "country_id")
-    private Long countryId;
-
-    @Column(name = "title_ru", length = 100)
+    @Column(name = "title", length = 200)
     private String title;
 
     public Long getId() {
@@ -36,22 +29,6 @@ public class _City {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getRegionId() {
-        return regionId;
-    }
-
-    public void setRegionId(Long regionId) {
-        this.regionId = regionId;
-    }
-
-    public Long getCountryId() {
-        return countryId;
-    }
-
-    public void setCountryId(Long countryId) {
-        this.countryId = countryId;
     }
 
     public String getTitle() {
@@ -67,9 +44,9 @@ public class _City {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        _City city = (_City) o;
+        GeoName geoName = (GeoName) o;
 
-        if (id != null ? !id.equals(city.id) : city.id != null) return false;
+        if (id != null ? !id.equals(geoName.id) : geoName.id != null) return false;
 
         return true;
     }

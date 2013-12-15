@@ -1,10 +1,10 @@
 package com.petrpopov.opennlprus.service;
 
 import com.petrpopov.opennlprus.crawl.CrawlerManager;
-import com.petrpopov.opennlprus.dao.WebTextDao;
+import com.petrpopov.opennlprus.domain.dao.WebTextDao;
+import com.petrpopov.opennlprus.domain.entity.WebText;
 import com.petrpopov.opennlprus.dto.ParseMessage;
 import com.petrpopov.opennlprus.dto.WebMessage;
-import com.petrpopov.opennlprus.entity.WebText;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -25,6 +25,9 @@ public class WebMessageService {
 
     @Value("${web_message_limit}")
     private Long WEB_MESSAGE_LIMIT;
+
+    @Value("${check_web_message_limit}")
+    private Boolean CHECK_WEB_MESSAGE_LIMIT;
 
     @Autowired
     private Splitter splitter;
@@ -53,6 +56,9 @@ public class WebMessageService {
     }
 
     public void stopIfNeed() {
+        if( CHECK_WEB_MESSAGE_LIMIT.equals(Boolean.FALSE) )
+            return;
+
         Long count = webTextDao.count();
         if( count >= WEB_MESSAGE_LIMIT )
             crawlerManager.stop();

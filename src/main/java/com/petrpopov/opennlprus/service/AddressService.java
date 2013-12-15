@@ -1,7 +1,7 @@
 package com.petrpopov.opennlprus.service;
 
-import com.petrpopov.opennlprus.dao.*;
-import com.petrpopov.opennlprus.entity.GeoName;
+import com.petrpopov.opennlprus.domain.dao.*;
+import com.petrpopov.opennlprus.domain.entity.GeoName;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

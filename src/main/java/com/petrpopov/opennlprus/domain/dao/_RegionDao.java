@@ -1,6 +1,6 @@
-package com.petrpopov.opennlprus.dao;
+package com.petrpopov.opennlprus.domain.dao;
 
-import com.petrpopov.opennlprus.entity._Region;
+import com.petrpopov.opennlprus.domain.entity._Region;
 import org.springframework.stereotype.Component;
 
 /**

@@ -1,4 +1,4 @@
-package com.petrpopov.opennlprus.dao;
+package com.petrpopov.opennlprus.domain.dao;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;

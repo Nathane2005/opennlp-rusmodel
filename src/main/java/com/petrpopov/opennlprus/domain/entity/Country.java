@@ -1,4 +1,4 @@
-package com.petrpopov.opennlprus.entity;
+package com.petrpopov.opennlprus.domain.entity;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;

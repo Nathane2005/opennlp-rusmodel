@@ -1,4 +1,4 @@
-package com.petrpopov.opennlprus.entity;
+package com.petrpopov.opennlprus.domain.entity;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -13,13 +13,16 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name="_regions")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "_regions")
-public class _Region {
+@Table(name="_cities")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "_cities")
+public class _City {
 
     @Id
-    @Column(name = "region_id")
+    @Column(name = "city_id")
     private Long id;
+
+    @Column(name = "region_id")
+    private Long regionId;
 
     @Column(name = "country_id")
     private Long countryId;
@@ -33,6 +36,14 @@ public class _Region {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(Long regionId) {
+        this.regionId = regionId;
     }
 
     public Long getCountryId() {
@@ -56,9 +67,9 @@ public class _Region {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        _Region region = (_Region) o;
+        _City city = (_City) o;
 
-        if (id != null ? !id.equals(region.id) : region.id != null) return false;
+        if (id != null ? !id.equals(city.id) : city.id != null) return false;
 
         return true;
     }

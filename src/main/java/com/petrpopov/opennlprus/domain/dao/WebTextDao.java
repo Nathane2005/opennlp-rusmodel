@@ -1,6 +1,6 @@
-package com.petrpopov.opennlprus.dao;
+package com.petrpopov.opennlprus.domain.dao;
 
-import com.petrpopov.opennlprus.entity.WebText;
+import com.petrpopov.opennlprus.domain.entity.WebText;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

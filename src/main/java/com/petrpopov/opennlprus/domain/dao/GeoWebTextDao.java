@@ -1,6 +1,6 @@
-package com.petrpopov.opennlprus.dao;
+package com.petrpopov.opennlprus.domain.dao;
 
-import com.petrpopov.opennlprus.entity.GeoWebText;
+import com.petrpopov.opennlprus.domain.entity.GeoWebText;
 import org.springframework.stereotype.Component;
 
 /**

@@ -15,30 +15,18 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
+        crawl();
+    }
+
+    private static void analyze() {
+
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
                 new String[] {"spring/applicationContext.xml"}, true);
-        //GeoSearcher searcher = context.getBean(GeoSearcher.class);
+    }
 
-        //searcher.uberFuckingMethod();
-
-      /*
-        GeoWebTextDao bean = context.getBean(GeoWebTextDao.class);
-        List<GeoWebText> all = bean.findAll();
-
-        FileWriter fstream = new FileWriter("/Users/petrpopov/Downloads/modeltest.txt", true);
-        BufferedWriter out = new BufferedWriter(fstream);
-
-        //Close the output stream
-
-
-        for (GeoWebText geoWebText : all) {
-            String text = geoWebText.getText();
-            out.write(text);
-            out.newLine();
-        }
-
-        out.close();  */
-
+    private static void crawl() throws Exception {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+                new String[] {"spring/applicationContext.xml"}, true);
 
         List<String> urls = new ArrayList<String>();
         urls.add("http://ria.ru/");
