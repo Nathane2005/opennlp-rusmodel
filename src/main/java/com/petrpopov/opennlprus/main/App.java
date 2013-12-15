@@ -1,6 +1,10 @@
 package com.petrpopov.opennlprus.main;
 
+import com.petrpopov.opennlprus.crawl.CrawlerManager;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: petrpopov
@@ -13,8 +17,6 @@ public class App {
 
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
                 new String[] {"spring/applicationContext.xml"}, true);
-
-
         //GeoSearcher searcher = context.getBean(GeoSearcher.class);
 
         //searcher.uberFuckingMethod();
@@ -38,9 +40,7 @@ public class App {
         out.close();  */
 
 
-        //GeoSearcher searcher = context.getBean(GeoSearcher.class);
-        //searcher.uberFuckingMethod();
-       /* List<String> urls = new ArrayList<String>();
+        List<String> urls = new ArrayList<String>();
         urls.add("http://ria.ru/");
         urls.add("http://lenta.ru/");
         urls.add("http://rbc.ru/");
@@ -53,6 +53,6 @@ public class App {
         urls.add("http://www.rg.ru/");
 
         CrawlerManager manager = context.getBean(CrawlerManager.class);
-        manager.start(urls); */
+        manager.start(urls);
     }
 }

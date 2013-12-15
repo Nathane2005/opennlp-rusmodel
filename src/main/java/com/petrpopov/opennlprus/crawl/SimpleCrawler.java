@@ -1,18 +1,14 @@
-package com.petrpopov.opennlprus.service;
+package com.petrpopov.opennlprus.crawl;
 
+import com.petrpopov.opennlprus.dto.WebMessage;
+import com.petrpopov.opennlprus.support.OpException;
 import com.petrpopov.opennlprus.support.SpringContext;
-import com.petrpopov.opennlprus.support.WebMessage;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 import org.apache.log4j.Logger;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -50,6 +46,11 @@ public class SimpleCrawler extends WebCrawler {
     @Override
     public boolean shouldVisit(WebURL webUrl) {
 
+        boolean stopped = isStopped();
+        if( stopped ) {
+            return false;
+        }
+
         String href = webUrl.getURL().toLowerCase();
 
         boolean b = !FILTERS.matcher(href).matches();
@@ -69,35 +70,38 @@ public class SimpleCrawler extends WebCrawler {
 
         if (page.getParseData() instanceof HtmlParseData) {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
-            String text = htmlParseData.getText();
-            String html = htmlParseData.getHtml();
-            List<WebURL> links = htmlParseData.getOutgoingUrls();
+            //List<WebURL> links = htmlParseData.getOutgoingUrls();
 
-            WebMessage message = getMessage(url, htmlParseData);
-            sendMessage(message);
+            try {
+                processMessage(htmlParseData, url);
+            } catch (OpException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
-    public void sendMessage(final WebMessage message) {
-        JmsTemplate template = getJmsTemplate();
-        template.send(new MessageCreator() {
-            @Override
-            public Message createMessage(Session session) throws JMSException {
-                return session.createObjectMessage(message);
-            }
-        });
+    private void processMessage(HtmlParseData htmlParseData, String url) throws OpException {
+
+        String text = htmlParseData.getText();
+        String html = htmlParseData.getHtml();
+
+        WebMessage message = new WebMessage(url, text, html);
+
+        CrawlProcessing processing = SpringContext.getApplicationContext().getBean(CrawlProcessing.class);
+        if( processing != null )
+            processing.proccessMessage(message);
     }
 
-    private JmsTemplate getJmsTemplate() {
-        JmsTemplate jmsTemplate = SpringContext.getApplicationContext().getBean(JmsTemplate.class);
-        return jmsTemplate;
-    }
 
-    private WebMessage getMessage(String url, HtmlParseData page) {
-        String text = page.getText();
+    private boolean isStopped() {
 
-        WebMessage mes = new WebMessage(url, text);
-        return mes;
+        CrawlStatus status = SpringContext.getApplicationContext().getBean(CrawlStatus.class);
+        if( status != null ) {
+            boolean stopped = status.isStopped();
+            return stopped;
+        }
+
+        return false;
     }
 }
 

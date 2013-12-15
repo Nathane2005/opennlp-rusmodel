@@ -1,4 +1,4 @@
-package com.petrpopov.opennlprus.support;
+package com.petrpopov.opennlprus.dto;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package com.petrpopov.opennlprus.support;
+package com.petrpopov.opennlprus.dto;
 
 import java.io.Serializable;
 
@@ -11,15 +11,16 @@ public class WebMessage implements Serializable {
 
     private String url;
     private String text;
+    private String html;
 
     public WebMessage() {
     }
 
-    public WebMessage(String url, String text) {
+    public WebMessage(String url, String text, String html) {
         this.url = url;
         this.text = text;
+        this.html = html;
     }
-
 
     public String getUrl() {
         return url;
@@ -35,6 +36,14 @@ public class WebMessage implements Serializable {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getHtml() {
+        return html;
+    }
+
+    public void setHtml(String html) {
+        this.html = html;
     }
 
     @Override

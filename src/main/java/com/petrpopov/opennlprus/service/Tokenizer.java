@@ -1,7 +1,13 @@
 package com.petrpopov.opennlprus.service;
 
 import com.google.common.base.Strings;
+import com.petrpopov.opennlprus.support.DateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +17,24 @@ import java.util.List;
  * Time: 17:39
  */
 
+@Component
 public class Tokenizer {
 
-    public static List<String> tokenize(String text) {
+    @Value("${tokenizer_skip_length}")
+    private Integer LENGTH;
+
+    private static final String ENTER = "\n";
+    private static final String TAB = "\t";
+    private static final String EMPTY_SPACE = "\\s{3,}";
+    private static final String DELIMETER = "[?!]";
+    private static final String POINT_EXCEPT_NUMBERS = "\\.[^A-Za-z0-9]";
+    private static final String LEFT_GARBAGE = "([<>\\-_]+)$";
+    private static final String RIGHT_GARBAGE = "^([<>\\-_]+)";
+
+    @Autowired
+    private DateUtil dateUtil;
+
+    public List<String> tokenize(String text) {
 
         List<String> res = new ArrayList<String>();
 
@@ -22,7 +43,7 @@ public class Tokenizer {
         }
 
         String trim = text.trim();
-        String[] enter = trim.split("\n");
+        String[] enter = trim.split(ENTER);
 
         for (String string : enter) {
 
@@ -30,20 +51,20 @@ public class Tokenizer {
             if( Strings.isNullOrEmpty(s0) )
                 continue;
 
-            String[] split2 = s0.split("\t");
+            String[] split2 = s0.split(TAB);
             for (String s : split2) {
 
-                String[] split3 = s.split("\\s{3,}");
+                String[] split3 = s.split(EMPTY_SPACE);
                 for (String ss : split3) {
 
-                    String[] split = ss.split("[?!]");
+                    String[] split = ss.split(DELIMETER);
                     for (String s1 : split) {
 
                         String s2 = s1.trim();
                         if(Strings.isNullOrEmpty(s2))
                             continue;
 
-                        String[] split1 = s2.split("\\.[^A-Za-z0-9]");
+                        String[] split1 = s2.split(POINT_EXCEPT_NUMBERS);
                         for (String s3 : split1){
 
                             String s4 = s3.trim();
@@ -61,23 +82,48 @@ public class Tokenizer {
         return res;
     }
 
-    private static List<String> clean(List<String> strings) {
+    private List<String> clean(List<String> strings) {
 
         List<String> res = new ArrayList<String>();
         for (String string : strings) {
+
             String clean = clean(string);
+            boolean isDate = isDateString(clean);
+            if( isDate )
+                continue;
+
+            boolean isUrl = isURLString(clean);
+            if( isUrl )
+                continue;
+
+            if( clean.length() <= LENGTH )
+                continue;
+
             res.add(clean);
         }
 
         return res;
     }
 
-    private static String clean(String str) {
+    private String clean(String str) {
 
-        String replace = str.replaceAll("([<>\\-_]+)$", "");
-        replace.replaceAll("^([<>\\-_]+)","");
+        String replace = str.replaceAll(LEFT_GARBAGE, "");
+        replace.replaceAll(RIGHT_GARBAGE,"");
         replace = replace.trim();
 
         return replace;
+    }
+
+    private boolean isDateString(String str) {
+        return dateUtil.isDateString(str);
+    }
+
+    private boolean isURLString(String str) {
+        try {
+            URL url = new URL(str);
+            return true;
+        } catch (MalformedURLException e) {
+            return false;
+        }
     }
 }

@@ -1,10 +1,11 @@
-package com.petrpopov.opennlprus.service;
+package com.petrpopov.opennlprus.crawl;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -29,8 +30,10 @@ public class CrawlerManager {
     @Value("${links_limit}")
     private Integer linksLimit;
 
-    private List<String> urls;
+    @Autowired
+    private CrawlStatus crawlStatus;
 
+    private List<String> urls;
     private CrawlController controller;
 
     private volatile boolean stopped = false;
@@ -69,7 +72,8 @@ public class CrawlerManager {
         if( stopped )
             return;
 
-        stopped=true;
+        stopped = true;
+        crawlStatus.setStopped(true);
         controller.shutdown();
     }
 

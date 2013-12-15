@@ -1,7 +1,7 @@
 package com.petrpopov.opennlprus.service;
 
-import com.petrpopov.opennlprus.support.ParseMessage;
-import com.petrpopov.opennlprus.support.WebMessage;
+import com.petrpopov.opennlprus.dto.ParseMessage;
+import com.petrpopov.opennlprus.dto.WebMessage;
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;

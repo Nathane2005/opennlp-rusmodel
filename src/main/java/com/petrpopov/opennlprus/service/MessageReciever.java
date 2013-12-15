@@ -1,6 +1,7 @@
 package com.petrpopov.opennlprus.service;
 
-import com.petrpopov.opennlprus.support.WebMessage;
+import com.petrpopov.opennlprus.crawl.CrawlerManager;
+import com.petrpopov.opennlprus.dto.WebMessage;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,9 +22,6 @@ import java.io.Serializable;
 
 @Component
 public class MessageReciever implements SessionAwareMessageListener {
-
-    @Autowired
-    private WebMessageAnalyzer webMessageAnalyzer;
 
     @Autowired
     private WebMessageService webMessageService;

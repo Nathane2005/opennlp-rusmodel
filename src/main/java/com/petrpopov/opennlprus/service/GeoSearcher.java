@@ -2,9 +2,9 @@ package com.petrpopov.opennlprus.service;
 
 import com.petrpopov.opennlprus.dao.GeoWebTextDao;
 import com.petrpopov.opennlprus.dao.WebTextDao;
+import com.petrpopov.opennlprus.dto.ParseMessage;
 import com.petrpopov.opennlprus.entity.GeoWebText;
 import com.petrpopov.opennlprus.entity.WebText;
-import com.petrpopov.opennlprus.support.ParseMessage;
 import org.apache.log4j.Logger;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
