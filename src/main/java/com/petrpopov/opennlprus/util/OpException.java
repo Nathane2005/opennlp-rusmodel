@@ -1,4 +1,4 @@
-package com.petrpopov.opennlprus.support;
+package com.petrpopov.opennlprus.util;
 
 /**
  * Created by petrpopov on 15.12.13.

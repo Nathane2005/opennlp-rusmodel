@@ -1,8 +1,8 @@
 package com.petrpopov.opennlprus.crawl;
 
 import com.petrpopov.opennlprus.dto.WebMessage;
-import com.petrpopov.opennlprus.support.OpException;
-import com.petrpopov.opennlprus.support.SpringContext;
+import com.petrpopov.opennlprus.util.OpException;
+import com.petrpopov.opennlprus.util.SpringContext;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;

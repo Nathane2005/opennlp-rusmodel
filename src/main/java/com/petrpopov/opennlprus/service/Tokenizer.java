@@ -1,7 +1,7 @@
 package com.petrpopov.opennlprus.service;
 
 import com.google.common.base.Strings;
-import com.petrpopov.opennlprus.support.DateUtil;
+import com.petrpopov.opennlprus.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -22,6 +22,8 @@ public class Tokenizer {
 
     @Value("${tokenizer_skip_length}")
     private Integer LENGTH;
+
+    private static final Integer TIME_LENGTH = 6;
 
     private static final String ENTER = "\n";
     private static final String TAB = "\t";
@@ -88,6 +90,9 @@ public class Tokenizer {
         for (String string : strings) {
 
             String clean = clean(string);
+            if( Strings.isNullOrEmpty(clean) )
+                continue;
+
             boolean isDate = isDateString(clean);
             if( isDate )
                 continue;
@@ -96,10 +101,14 @@ public class Tokenizer {
             if( isUrl )
                 continue;
 
-            if( clean.length() <= LENGTH )
+            String cleanTime = cleanTime(clean);
+            String cleanQuotes = cleanQuotes(cleanTime);
+            String cleanCopyright = cleanCopyright(cleanQuotes);
+
+            if( cleanCopyright.length() <= LENGTH )
                 continue;
 
-            res.add(clean);
+            res.add(cleanCopyright);
         }
 
         return res;
@@ -114,16 +123,59 @@ public class Tokenizer {
         return replace;
     }
 
+    private String cleanTime(String str) {
+        if( str.length() < TIME_LENGTH )
+            return str;
+
+        String substring = str.substring(0, TIME_LENGTH);
+
+        boolean date = isDateString(substring.trim());
+        if( date ) {
+            return str.substring(TIME_LENGTH);
+        }
+
+        return str;
+    }
+
+    private String cleanQuotes(String str) {
+
+        String quotes = str.replaceAll("\"", "");
+
+        int diff = quotes.length() - str.length();
+        if( diff > 0 ) {
+            if( diff % 2 != 0 ) {
+                if( str.charAt(0) == '"' ) {
+                    return str.substring(1);
+                }
+                else if( str.charAt(str.length()-1) == '"') {
+                    return str.substring(0, str.length()-1);
+                }
+                else return str;
+            }
+        }
+
+        return str;
+    }
+
+    private String cleanCopyright(String str) {
+        if( str.contains("©"))
+            return "";
+        return str;
+    }
+
     private boolean isDateString(String str) {
         return dateUtil.isDateString(str);
     }
 
     private boolean isURLString(String str) {
+
         try {
-            URL url = new URL(str);
-            return true;
+            new URL(str);
         } catch (MalformedURLException e) {
             return false;
         }
+
+
+        return true;
     }
 }

@@ -1,4 +1,4 @@
-package com.petrpopov.opennlprus.support;
+package com.petrpopov.opennlprus.util;
 
 import com.google.common.base.Strings;
 import org.springframework.stereotype.Component;
@@ -31,6 +31,16 @@ public class DateUtil {
             add(new ThreadSafeSimpleDateFormat("yyyy-dd-MM"));
 
             add(new ThreadSafeSimpleDateFormat("hh:mm dd.MM.yyyy"));
+            add(new ThreadSafeSimpleDateFormat("HH:mm dd.MM.yyyy"));
+
+            add(new ThreadSafeSimpleDateFormat("HH:mm"));
+            add(new ThreadSafeSimpleDateFormat("hh:mm"));
+            add(new ThreadSafeSimpleDateFormat("hh:mm a"));
+            add(new ThreadSafeSimpleDateFormat("hh:mm Z"));
+            add(new ThreadSafeSimpleDateFormat("HH:mm a"));
+            add(new ThreadSafeSimpleDateFormat("HH:mm Z"));
+
+            add(new ThreadSafeSimpleDateFormat("HH:mm dd MMM yyyy"));
 
             add(new ThreadSafeSimpleDateFormat("dd/MM/yyyy"));
             add(new ThreadSafeSimpleDateFormat("MM/dd/yyyy"));
@@ -38,16 +48,22 @@ public class DateUtil {
             add(new ThreadSafeSimpleDateFormat("yyyy/dd/MM"));
 
             add(new ThreadSafeSimpleDateFormat("EEE, d MMM yyyy hh:mm:ss Z"));
+            add(new ThreadSafeSimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z"));
             add(new ThreadSafeSimpleDateFormat("EEE, d MMM yyyy"));
 
+            add(new ThreadSafeSimpleDateFormat("yyyy.MM.dd G 'at' hh:mm:ss z"));
             add(new ThreadSafeSimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss z"));
             add(new ThreadSafeSimpleDateFormat("EEE, MMM d, ''yy"));
             add(new ThreadSafeSimpleDateFormat("h:mm a"));
+            add(new ThreadSafeSimpleDateFormat("H:mm a"));
             add(new ThreadSafeSimpleDateFormat("hh 'o''clock' a, zzzz"));
             add(new ThreadSafeSimpleDateFormat("K:mm a, z"));
             add(new ThreadSafeSimpleDateFormat("yyyyy.MMMMM.dd GGG hh:mm aaa"));
+            add(new ThreadSafeSimpleDateFormat("yyyyy.MMMMM.dd GGG HH:mm aaa"));
             add(new ThreadSafeSimpleDateFormat("yyMMddHHmmssZ"));
             add(new ThreadSafeSimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
+            add(new ThreadSafeSimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ"));
+            add(new ThreadSafeSimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSXXX"));
             add(new ThreadSafeSimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"));
             add(new ThreadSafeSimpleDateFormat("YYYY-'W'ww-u"));
 
@@ -58,6 +74,14 @@ public class DateUtil {
 
             add(new ThreadSafeSimpleDateFormat("M/dd/yyyy hh:mm:ss a"));
             add(new ThreadSafeSimpleDateFormat("dd.M.yyyy hh:mm:ss a"));
+
+            add(new ThreadSafeSimpleDateFormat("EEE, d MMM yyyy HH:mm:ss aaa"));
+            add(new ThreadSafeSimpleDateFormat("EEE, d MMM yyyy HH:mm aaa"));
+            add(new ThreadSafeSimpleDateFormat("EEE, d MMM yyyy HH:mm:ss aaa Z"));
+            add(new ThreadSafeSimpleDateFormat("EEE, d MMM yyyy HH:mm aaa Z"));
+
+            add(new ThreadSafeSimpleDateFormat("M/dd/yyyy HH:mm:ss a"));
+            add(new ThreadSafeSimpleDateFormat("dd.M.yyyy HH:mm:ss a"));
 
             add(new ThreadSafeSimpleDateFormat("dd.MMM.yyyy"));
             add(new ThreadSafeSimpleDateFormat("dd-MMM-yyyy"));

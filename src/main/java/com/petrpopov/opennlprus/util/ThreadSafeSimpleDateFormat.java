@@ -1,4 +1,4 @@
-package com.petrpopov.opennlprus.support;
+package com.petrpopov.opennlprus.util;
 
 import java.text.DateFormat;
 import java.text.ParseException;

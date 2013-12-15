@@ -1,6 +1,6 @@
 package com.petrpopov.opennlprus;
 
-import com.petrpopov.opennlprus.support.DateUtil;
+import com.petrpopov.opennlprus.util.DateUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +23,15 @@ public class DateUtilTest {
     private DateUtil dateUtil;
 
     @Test
-    public void dateTest() {
+    public void dateTest1() {
         Date date = dateUtil.convertToDate("Sun, 15 Dec 2013 12:39:00 +0400");
+
+        assertNotNull(date);
+    }
+
+    @Test
+    public void dateTest2() {
+        Date date = dateUtil.convertToDate("21:35 14.02.2013");
 
         assertNotNull(date);
     }

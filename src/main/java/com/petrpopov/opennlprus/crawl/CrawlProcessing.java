@@ -4,7 +4,7 @@ import com.petrpopov.opennlprus.dto.Sentence;
 import com.petrpopov.opennlprus.dto.WebMessage;
 import com.petrpopov.opennlprus.service.Tokenizer;
 import com.petrpopov.opennlprus.service.WebMessageService;
-import com.petrpopov.opennlprus.support.OpException;
+import com.petrpopov.opennlprus.util.OpException;
 import de.l3s.boilerpipe.BoilerpipeProcessingException;
 import de.l3s.boilerpipe.extractors.ArticleExtractor;
 import org.springframework.beans.factory.annotation.Autowired;
