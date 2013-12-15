@@ -30,6 +30,8 @@ public class DateUtil {
             add(new ThreadSafeSimpleDateFormat("yyyy-MM-dd"));
             add(new ThreadSafeSimpleDateFormat("yyyy-dd-MM"));
 
+            add(new ThreadSafeSimpleDateFormat("hh:mm dd.MM.yyyy"));
+
             add(new ThreadSafeSimpleDateFormat("dd/MM/yyyy"));
             add(new ThreadSafeSimpleDateFormat("MM/dd/yyyy"));
             add(new ThreadSafeSimpleDateFormat("yyyy/MM/dd"));

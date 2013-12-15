@@ -3,6 +3,7 @@ package com.petrpopov.opennlprus.crawl;
 import com.petrpopov.opennlprus.dto.Sentence;
 import com.petrpopov.opennlprus.dto.WebMessage;
 import com.petrpopov.opennlprus.service.Tokenizer;
+import com.petrpopov.opennlprus.service.WebMessageService;
 import com.petrpopov.opennlprus.support.OpException;
 import de.l3s.boilerpipe.BoilerpipeProcessingException;
 import de.l3s.boilerpipe.extractors.ArticleExtractor;
@@ -30,6 +31,9 @@ public class CrawlProcessing {
     @Autowired
     private Tokenizer tokenizer;
 
+    @Autowired
+    private WebMessageService webMessageService;
+
     public void proccessMessage(WebMessage message) throws OpException {
 
         String text;
@@ -40,7 +44,16 @@ public class CrawlProcessing {
         }
 
 
-        getSentences(text, message.getUrl());
+        List<Sentence> sentences = getSentences(text, message.getUrl());
+        save(sentences);
+    }
+
+    private void save(List<Sentence> sentences) {
+
+        for (Sentence sentence : sentences) {
+
+            webMessageService.save(sentence);
+        }
     }
 
     private List<Sentence> getSentences(String text, String url) {

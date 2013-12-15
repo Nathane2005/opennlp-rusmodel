@@ -64,7 +64,7 @@ public class MessageReciever implements SessionAwareMessageListener {
         }
 
         //webMessageAnalyzer.analyze(webMessage);
-        webMessageService.save(webMessage);
+        //webMessageService.save(webMessage);
         webMessageService.stopIfNeed();
     }
 

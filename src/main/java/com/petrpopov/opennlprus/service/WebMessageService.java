@@ -3,15 +3,12 @@ package com.petrpopov.opennlprus.service;
 import com.petrpopov.opennlprus.crawl.CrawlerManager;
 import com.petrpopov.opennlprus.domain.dao.WebTextDao;
 import com.petrpopov.opennlprus.domain.entity.WebText;
-import com.petrpopov.opennlprus.dto.ParseMessage;
-import com.petrpopov.opennlprus.dto.WebMessage;
+import com.petrpopov.opennlprus.dto.Sentence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * User: petrpopov
@@ -30,29 +27,20 @@ public class WebMessageService {
     private Boolean CHECK_WEB_MESSAGE_LIMIT;
 
     @Autowired
-    private Splitter splitter;
-
-    @Autowired
     private WebTextDao webTextDao;
 
     @Autowired
     private CrawlerManager crawlerManager;
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void save(WebMessage webMessage) {
+    public void save(Sentence sentence) {
 
-        List<ParseMessage> list = splitter.split(webMessage);
-        for (ParseMessage message : list) {
+        Integer count = webTextDao.countByText(sentence.getValue());
+        if( count > 0 )
+            return;
 
-            String text = message.getText();
-            Integer count = webTextDao.countByText(text);
-            if( count > 0 )
-                continue;
-
-            WebText webText = new WebText(message.getMessageUrl().getUrl(),
-                    message.getMessageUrl().getNumber(), text);
-            webTextDao.save(webText);
-        }
+        WebText webText = new WebText(sentence.getUrl(), sentence.getNumber(), sentence.getValue());
+        webTextDao.save(webText);
     }
 
     public void stopIfNeed() {
