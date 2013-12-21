@@ -18,6 +18,13 @@ public class App {
         crawl();
     }
 
+    private static void search() {
+
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+                new String[] {"spring/applicationContext.xml"}, true);
+
+    }
+
     private static void analyze() {
 
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(

@@ -2,6 +2,7 @@ package com.petrpopov.opennlprus.crawl;
 
 import com.petrpopov.opennlprus.dto.Sentence;
 import com.petrpopov.opennlprus.dto.WebMessage;
+import com.petrpopov.opennlprus.service.SearchServerService;
 import com.petrpopov.opennlprus.service.Tokenizer;
 import com.petrpopov.opennlprus.service.WebMessageService;
 import com.petrpopov.opennlprus.util.OpException;
@@ -34,6 +35,9 @@ public class CrawlProcessing {
     @Autowired
     private WebMessageService webMessageService;
 
+    @Autowired
+    private SearchServerService searchServerService;
+
     public void proccessMessage(WebMessage message) throws OpException {
 
         String text;
@@ -48,10 +52,15 @@ public class CrawlProcessing {
         save(sentences);
     }
 
-    private void save(List<Sentence> sentences) {
+    private void save(List<Sentence> sentences) throws OpException {
+
+        try {
+            searchServerService.save(sentences);
+        } catch (Exception e) {
+            throw new OpException(e);
+        }
 
         for (Sentence sentence : sentences) {
-
             webMessageService.save(sentence);
         }
     }
