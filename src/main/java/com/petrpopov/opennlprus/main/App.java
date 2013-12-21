@@ -1,6 +1,7 @@
 package com.petrpopov.opennlprus.main;
 
 import com.petrpopov.opennlprus.crawl.CrawlerManager;
+import com.petrpopov.opennlprus.service.SearchServerService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.ArrayList;
@@ -15,13 +16,17 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
-        crawl();
+        search();
     }
 
     private static void search() {
 
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
                 new String[] {"spring/applicationContext.xml"}, true);
+
+
+        SearchServerService search = context.getBean(SearchServerService.class);
+        search.search("Минск");
 
     }
 
@@ -36,7 +41,7 @@ public class App {
                 new String[] {"spring/applicationContext.xml"}, true);
 
         List<String> urls = new ArrayList<String>();
-        urls.add("http://ria.ru/");
+      //  urls.add("http://ria.ru/");
         urls.add("http://lenta.ru/");
         urls.add("http://rbc.ru/");
         urls.add("http://www.bfm.ru/");

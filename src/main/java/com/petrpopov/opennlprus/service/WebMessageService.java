@@ -35,11 +35,11 @@ public class WebMessageService {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void save(Sentence sentence) {
 
-        Integer count = webTextDao.countByText(sentence.getValue());
+        Integer count = webTextDao.countByText(sentence.getBody());
         if( count > 0 )
             return;
 
-        WebText webText = new WebText(sentence.getUrl(), sentence.getNumber(), sentence.getValue());
+        WebText webText = new WebText(sentence.getUrl(), sentence.getNumber(), sentence.getBody());
         webTextDao.save(webText);
     }
 

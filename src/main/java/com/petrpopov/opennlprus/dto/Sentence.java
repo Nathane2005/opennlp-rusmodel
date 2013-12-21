@@ -9,12 +9,12 @@ public class Sentence implements Serializable {
 
     private String url;
     private Integer number;
-    private String value;
+    private String body;
 
-    public Sentence(String url, Integer number, String value) {
+    public Sentence(String url, Integer number, String body) {
         this.url = url;
         this.number = number;
-        this.value = value;
+        this.body = body;
     }
 
     public String getUrl() {
@@ -33,12 +33,12 @@ public class Sentence implements Serializable {
         this.number = number;
     }
 
-    public String getValue() {
-        return value;
+    public String getBody() {
+        return body;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setBody(String body) {
+        this.body = body;
     }
 
     @Override
@@ -48,13 +48,13 @@ public class Sentence implements Serializable {
 
         Sentence sentence = (Sentence) o;
 
-        if (value != null ? !value.equals(sentence.value) : sentence.value != null) return false;
+        if (body != null ? !body.equals(sentence.body) : sentence.body != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return value != null ? value.hashCode() : 0;
+        return body != null ? body.hashCode() : 0;
     }
 }

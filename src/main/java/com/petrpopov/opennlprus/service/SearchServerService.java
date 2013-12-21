@@ -5,9 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.petrpopov.opennlprus.dto.Sentence;
 import org.apache.log4j.Logger;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -30,8 +32,11 @@ public class SearchServerService {
     @Value("${search_index}")
     private String searchIndex;
 
-    @Value("${search_type}")
-    private String searchType;
+    @Value("${search_type1}")
+    private String searchType1;
+
+    @Value("${search_type2}")
+    private String searchType2;
 
 
     private volatile Client client;
@@ -44,24 +49,64 @@ public class SearchServerService {
         client = new TransportClient().addTransportAddress(new InetSocketTransportAddress(host, port));
     }
 
-    public void save(Sentence sentence) throws JsonProcessingException {
+
+    public synchronized void search(String q) {
+
+        SearchResponse response = client.prepareSearch(searchIndex)
+                .setTypes(searchType1)
+                .setQuery(QueryBuilders.fieldQuery("body", q))             // Query
+                .execute()
+                .actionGet();
+
+        logger.info(response);
+    }
+
+    public synchronized void save(Sentence sentence) throws JsonProcessingException {
 
         String json = mapper.writeValueAsString(sentence);
 
-        IndexResponse response = client.prepareIndex(searchIndex, searchType)
+        IndexResponse response = client.prepareIndex(searchIndex, searchType1)
                 .setSource(json)
                 .execute()
                 .actionGet();
 
-        String id = response.getId();
-        logger.info("Saved document with id: " +id);
+        String id1 = response.getId();
+
+        response = client.prepareIndex(searchIndex, searchType2)
+                .setSource(json)
+                .execute()
+                .actionGet();
+
+        String id2 = response.getId();
+
+        logger.info("Saved document with id1: " +id1 + " and id2: " + id2);
     }
 
-    public void save(List<Sentence> sentences) throws JsonProcessingException {
+    public synchronized void save(List<Sentence> sentences) throws JsonProcessingException {
+
+       /* BulkRequestBuilder bulkRequest = client.prepareBulk();
+
+        for (Sentence sentence : sentences) {
+
+            String json = mapper.writeValueAsString(sentence);
+            IndexRequestBuilder source1 = client.prepareIndex(searchIndex, searchType1)
+                    .setSource(json);
+
+            bulkRequest.add(source1);
+
+            IndexRequestBuilder source2 = client.prepareIndex(searchIndex, searchType2)
+                    .setSource(json);
+
+            bulkRequest.add(source2);
+        }
+
+        BulkResponse response = bulkRequest.execute().actionGet();
+        logger.info("Saved documents"); */
 
         for (Sentence sentence : sentences) {
             save(sentence);
         }
+
     }
 
 }
