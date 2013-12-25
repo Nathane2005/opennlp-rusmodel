@@ -16,7 +16,7 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
-        search();
+        crawl();
     }
 
     private static void search() {
@@ -42,6 +42,11 @@ public class App {
 
         List<String> urls = new ArrayList<String>();
       //  urls.add("http://ria.ru/");
+        urls.add("http://www.the-village.ru/");
+        urls.add("http://bg.ru/");
+        urls.add("http://www.furfurmag.ru/");
+        urls.add("http://www.wonderzine.com/");
+        urls.add("http://www.afisha.ru/");
         urls.add("http://lenta.ru/");
         urls.add("http://rbc.ru/");
         urls.add("http://www.bfm.ru/");

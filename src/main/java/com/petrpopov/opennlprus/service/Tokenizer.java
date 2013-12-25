@@ -101,6 +101,14 @@ public class Tokenizer {
             if( isUrl )
                 continue;
 
+            boolean cdata = isCDATA(clean);
+            if( cdata )
+                continue;
+
+            boolean russian = isRussian(clean);
+            if( !russian )
+                continue;
+
             String cleanTime = cleanTime(clean);
             String cleanQuotes = cleanQuotes(cleanTime);
             String cleanCopyright = cleanCopyright(cleanQuotes);
@@ -177,5 +185,18 @@ public class Tokenizer {
 
 
         return true;
+    }
+
+    private boolean isCDATA(String str) {
+        char c = str.charAt(0);
+
+        boolean letter = Character.isLetter(c);
+        return !letter;
+    }
+
+    private boolean isRussian(String str) {
+
+        String sub = str.substring(0, 1);
+        return sub.matches("[А-Яа-я]");
     }
 }
