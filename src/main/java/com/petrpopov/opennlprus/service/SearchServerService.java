@@ -8,13 +8,20 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.highlight.HighlightField;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by petrpopov on 15.12.13.
@@ -38,6 +45,14 @@ public class SearchServerService {
     @Value("${search_type2}")
     private String searchType2;
 
+    @Value("${start_tag}")
+    private String startTag;
+
+    @Value("${end_tag}")
+    private String endTag;
+
+    @Autowired
+    private TagCleaner tagCleaner;
 
     private volatile Client client;
     private volatile ObjectMapper mapper = new ObjectMapper();
@@ -50,15 +65,60 @@ public class SearchServerService {
     }
 
 
-    public synchronized void search(String q) {
+    public long search(String q) {
 
+        SearchResponse response = searchResponse(q);
+
+        //logger.info(response);
+        //Map<String,HighlightField> fields = response.getHits().getAt(0).highlightFields();
+
+        SearchHits hits = response.getHits();
+        return hits.totalHits();
+    }
+
+    public List<String> search(String q, Integer count) {
+
+        List<String> res = new ArrayList<String>();
+
+        SearchResponse response = searchResponse(q);
+        SearchHits hits = response.getHits();
+
+        int counter = 0;
+        for (SearchHit hit : hits) {
+            if( counter == count )
+                break;
+
+            Map<String, HighlightField> fields = hit.highlightFields();
+            for (Map.Entry<String, HighlightField> entry : fields.entrySet()) {
+                HighlightField field = entry.getValue();
+                Text[] fragments = field.getFragments();
+                for (Text fragment : fragments) {
+                    res.add(fragment.string());
+                }
+
+            }
+
+
+            counter++;
+        }
+
+        List<String> clean = tagCleaner.cleanTag(res);
+
+        return clean;
+    }
+
+
+    private synchronized SearchResponse searchResponse(String q) {
         SearchResponse response = client.prepareSearch(searchIndex)
                 .setTypes(searchType1)
                 .setQuery(QueryBuilders.fieldQuery("body", q))             // Query
+                .addHighlightedField("body", 1000, 1000)
+                .setHighlighterPreTags(" " + startTag + " ")
+                .setHighlighterPostTags(" " + endTag + " ")
                 .execute()
                 .actionGet();
 
-        logger.info(response);
+        return response;
     }
 
     public synchronized void save(Sentence sentence) throws JsonProcessingException {
