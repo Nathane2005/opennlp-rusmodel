@@ -5,6 +5,7 @@ import com.petrpopov.opennlprus.service.SearchAnalyzer;
 import com.petrpopov.opennlprus.service.SearchServerService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class App {
         System.out.println(count);
     }
 
-    private static void analyze() {
+    private static void analyze() throws IOException {
 
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
                 new String[] {"spring/applicationContext.xml"}, true);

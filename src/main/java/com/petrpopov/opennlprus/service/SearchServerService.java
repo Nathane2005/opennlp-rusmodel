@@ -51,6 +51,9 @@ public class SearchServerService {
     @Value("${end_tag}")
     private String endTag;
 
+    @Value("${search_max_limit}")
+    private Integer searchMaxLimit;
+
     @Autowired
     private TagCleaner tagCleaner;
 
@@ -76,16 +79,19 @@ public class SearchServerService {
         return hits.totalHits();
     }
 
-    public List<String> search(String q, Integer count) {
+    public List<String> search(String q, Integer minCount, Integer maxCount) {
 
         List<String> res = new ArrayList<String>();
 
         SearchResponse response = searchResponse(q);
         SearchHits hits = response.getHits();
 
+        if( hits.totalHits() < minCount )
+            return res;
+
         int counter = 0;
         for (SearchHit hit : hits) {
-            if( counter == count )
+            if( counter == maxCount)
                 break;
 
             Map<String, HighlightField> fields = hit.highlightFields();
@@ -102,6 +108,9 @@ public class SearchServerService {
             counter++;
         }
 
+        if( !q.contains("AND") )
+            return res;
+
         List<String> clean = tagCleaner.cleanTag(res);
 
         return clean;
@@ -115,6 +124,7 @@ public class SearchServerService {
                 .addHighlightedField("body", 1000, 1000)
                 .setHighlighterPreTags(" " + startTag + " ")
                 .setHighlighterPostTags(" " + endTag + " ")
+                .setSize(searchMaxLimit)
                 .execute()
                 .actionGet();
 
