@@ -18,7 +18,9 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
-        analyze();
+        //RussianLuceneMorphology morphology = new RussianLuceneMorphology();
+        //List<String> s = morphology.getNormalForms("москвою");
+         analyze();
     }
 
     private static void search() {

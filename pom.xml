@@ -195,12 +195,12 @@
             <version>${lucene.version}</version>
         </dependency>
 
-        <!--dependency>
+        <dependency>
             <groupId>org.apache.lucene.morphology</groupId>
             <artifactId>russian</artifactId>
             <version>1.0</version>
-        </dependency-->
-        <!-- end of lucene -->
+        </dependency>
+        <!-- end of lucene-->
 
         <dependency>
             <groupId>org.elasticsearch</groupId>

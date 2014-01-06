@@ -51,7 +51,7 @@ public class SearchAnalyzer {
             String q = address.trim();
 
             logger.info("Searching for adress: " + q);
-            if( excludes.contains(q) ) {
+            if( excludes.contains(q) || !q.equals("Сочи") ) {
                 logger.info("Omitting " + q + " for searching");
                 continue;
             }

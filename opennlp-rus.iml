@@ -90,6 +90,8 @@
     <orderEntry type="library" name="Maven: jakarta-regexp:jakarta-regexp:1.4" level="project" />
     <orderEntry type="library" name="Maven: org.apache.lucene:lucene-highlighter:4.6.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.lucene:lucene-memory:4.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.lucene.morphology:russian:1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.lucene.morphology:morph:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.elasticsearch:elasticsearch:0.90.7" level="project" />
     <orderEntry type="library" name="Maven: org.apache.lucene:lucene-analyzers-common:4.5.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.lucene:lucene-codecs:4.5.1" level="project" />
